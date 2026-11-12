@@ -30,6 +30,10 @@ export const DEVOLUTIVAS: AnoDevolutivas[] = [
   { ano: 2026, contagem: { "nao-procede": 5, "em-analise": 3, concluido: 1 } },
   { ano: 2025, contagem: { "nao-procede": 2, "em-analise": 2, concluido: 4 } },
   { ano: 2024, contagem: { "nao-procede": 1, "em-analise": 1, concluido: 6 } },
+  // 2023 e 2022: anos extras de exemplo, só para a barra de rolagem ter o que rolar.
+  // Apague-os se a Central deve mostrar apenas 2026, 2025 e 2024.
+  { ano: 2023, contagem: { "nao-procede": 3, "em-analise": 0, concluido: 5 } },
+  { ano: 2022, contagem: { "nao-procede": 4, "em-analise": 1, concluido: 2 } },
 ];
 
 export type Manifestacao = {

@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 
 /**
  * Faixa azul-marinho de cabeçalho/rodapé (vazia nos mockups).
- * Posicione com box(x, y, w, h) de "@/lib/cpa-box".
+ * Posicione com band({...}) de "@/lib/cpa-box". Aceita filhos (posicionados dentro da faixa).
  */
 export function BarraInstitucional({
   as: Tag = "div",

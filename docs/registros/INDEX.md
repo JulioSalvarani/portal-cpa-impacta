@@ -4,7 +4,7 @@
 |---|---|
 | **Registro nº** | 0007 |
 | **Data de criação** | 09/11/2026, 20:48 (America/Sao_Paulo) |
-| **Última atualização** | 11/11/2026, 07:59 (America/Sao_Paulo), registro 0010 |
+| **Última atualização** | 11/11/2026, 18:30 (America/Sao_Paulo), registro 0012 |
 
 ## Como usar
 
@@ -26,5 +26,8 @@
 | 0008 | 10/11/2026 | Criação | Protótipo visual das 4 telas (também atualiza este índice) | [0008-prototipo-visual.md](0008-prototipo-visual.md) |
 | 0009 | 10/11/2026 | Atualização | Protótipo visual em Next + shadcn/ui, sem lógica (também atualiza este índice e o README) | [0009-prototipo-visual-next.md](0009-prototipo-visual-next.md) |
 | 0010 | 11/11/2026 | Atualização | Visual com CSS próprio, fiel ao mockup 008 (também atualiza este índice e o README) | [0010-visual-css-proprio.md](0010-visual-css-proprio.md) |
+| 0011 | 11/11/2026 | Atualização | Tela cheia, barra de rolagem real e modal centralizado (também atualiza este índice e o README) | [0011-tela-cheia-scroll-modal.md](0011-tela-cheia-scroll-modal.md) |
+| 0012 | 11/11/2026 | Criação | Páginas de administrador: Resultados e Responder Devolutiva (também atualiza este índice e o README) | [0012-paginas-administrador.md](0012-paginas-administrador.md) |
+| 0013 | 11/11/2026 | Atualização | Consolidação das páginas de administrador: restauração dos arquivos do 0012 e remoção de duplicados (também atualiza este índice e o README) | [0013-consolidacao-paginas-administrador.md](0013-consolidacao-paginas-administrador.md) |
 
-**Próximo número livre: 0011**
+**Próximo número livre: 0014**

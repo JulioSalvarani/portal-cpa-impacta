@@ -6,7 +6,7 @@ import { u } from "@/lib/cpa-box";
 const CLASSE: Record<StatusDevolutiva, string> = {
   "nao-procede": "cpa-tag--negado",
   "em-analise": "cpa-tag--analise",
-  concluido: "cpa-tag--concluido",
+  "concluido": "cpa-tag--concluido",
 };
 
 /**

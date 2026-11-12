@@ -4,7 +4,7 @@ import { u } from "@/lib/cpa-box";
 const CLASSE_BARRA: Record<StatusDevolutiva, string> = {
   "nao-procede": "cpa-bar-negado",
   "em-analise": "cpa-bar-analise",
-  concluido: "cpa-bar-concluido",
+  "concluido": "cpa-bar-concluido",
 };
 
 /** Altura de cada unidade do gráfico, em px do mockup (6 unidades = 102 px). */
@@ -31,7 +31,7 @@ export function GraficoStatus({ contagem, ano }: Props) {
             <b>{contagem[status]}</b>
             <i
               className={CLASSE_BARRA[status]}
-              style={{ height: u(Math.max(1, contagem[status]) * PX_POR_UNIDADE) }}
+              style={{ height: u(contagem[status] === 0 ? 3 : contagem[status] * PX_POR_UNIDADE) }}
             />
           </div>
         ))}
