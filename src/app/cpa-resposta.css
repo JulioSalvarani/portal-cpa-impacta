@@ -1,0 +1,59 @@
+/*
+ * Registro 0016: botão "Ver resposta" no Mural e janela "Resposta da Devolutiva".
+ * Arquivo separado para não mexer no cpa.css (o projeto real pode ter ajustes seus nele).
+ * O modal fica fora do .cpa-stage (portal do Radix), por isso os seletores usam .cpa-modal.
+ */
+
+/* Segundo modal (resposta): menor que o do Mural. Especificidade maior que .cpa-modal.cpa-modal */
+.cpa-modal.cpa-modal.cpa-modal--resposta {
+  width: calc(560 * var(--u)) !important;
+  height: calc(330 * var(--u)) !important;
+}
+
+/* Grupo à direita do item do Mural: [Ver resposta] [etiqueta] */
+.cpa-modal .cpa-m-actions {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+}
+.cpa-modal .cpa-m-actions .cpa-tag,
+.cpa-modal .cpa-m-actions .cpa-tag:hover {
+  position: static;
+}
+
+/* Botão "Ver resposta" (shadcn Button): cápsula azul-marinho com contorno claro */
+.cpa-modal .cpa-m-ver,
+.cpa-modal .cpa-m-ver:hover {
+  display: block;
+  padding: 0 calc(12 * var(--u));
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: calc(11 * var(--u));
+  background: transparent;
+  color: var(--cpa-on-navy);
+  box-shadow: none;
+  white-space: nowrap;
+  font-family: inherit;
+  font-weight: 400;
+  cursor: pointer;
+}
+.cpa-modal .cpa-m-ver:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+.cpa-modal .cpa-m-ver:focus-visible {
+  outline: 2px solid #7fd4ff;
+  outline-offset: 2px;
+}
+
+/* Rótulos claros sobre o bloco azul-marinho da janela de resposta */
+.cpa-modal .cpa-m-label {
+  position: absolute;
+  color: var(--cpa-on-navy);
+  font-size: calc(13 * var(--u));
+  line-height: 1;
+}
+/* Justificativa: rola de verdade e quebra linha */
+.cpa-modal .cpa-m-text.cpa-m-text--scroll {
+  overflow-y: auto;
+  white-space: normal;
+}

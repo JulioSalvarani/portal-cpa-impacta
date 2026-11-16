@@ -6,7 +6,7 @@ import { MuralDialog } from "@/components/devolutivas/mural-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { DEVOLUTIVAS } from "@/lib/devolutivas-data";
+import { RESUMO_ANOS } from "@/lib/devolutivas-data";
 import { band, box, u } from "@/lib/cpa-box";
 
 /**
@@ -55,7 +55,7 @@ export function PainelDevolutivas() {
             aria-label="Devolutivas por ano"
             style={band({ left: 18, right: 18, top: 58, h: 300 })}
           >
-            {DEVOLUTIVAS.map((item) => (
+            {RESUMO_ANOS.map((item) => (
               <MuralDialog
                 key={item.ano}
                 ano={item.ano}

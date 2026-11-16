@@ -29,5 +29,9 @@
 | 0011 | 11/11/2026 | Atualização | Tela cheia, barra de rolagem real e modal centralizado (também atualiza este índice e o README) | [0011-tela-cheia-scroll-modal.md](0011-tela-cheia-scroll-modal.md) |
 | 0012 | 11/11/2026 | Criação | Páginas de administrador: Resultados e Responder Devolutiva (também atualiza este índice e o README) | [0012-paginas-administrador.md](0012-paginas-administrador.md) |
 | 0013 | 11/11/2026 | Atualização | Consolidação das páginas de administrador: restauração dos arquivos do 0012 e remoção de duplicados (também atualiza este índice e o README) | [0013-consolidacao-paginas-administrador.md](0013-consolidacao-paginas-administrador.md) |
+| 0014 | 12/11/2026 | Criação | Contexto completo do projeto para novas conversas (também atualiza este índice e o README) | [0014-contexto-do-projeto.md](0014-contexto-do-projeto.md) |
+| 0015 | 15/11/2026 | Atualização | Supabase + Prisma 7 e ajustes do usuário: modal centralizado, áreas reais (também atualiza 0014, este índice e o README) | [0015-supabase-prisma-e-ajustes-do-usuario.md](0015-supabase-prisma-e-ajustes-do-usuario.md) |
+| 0016 | 16/11/2026 | Criação | Botão "Ver resposta" + janela de justificativa, campo Título da resposta, etiquetas de categoria e respostas do usuário ao 0015 (também atualiza 0014, 0015, este índice e o README) | [0016-ver-resposta-titulo-e-decisoes.md](0016-ver-resposta-titulo-e-decisoes.md) |
+| 0017 | 16/11/2026 | Atualização | Devolutivas no lugar de manifestações; categorias únicas para etiquetas e barras; Google Forms; perfis Aluno e Coordenação; proposta de banco (também atualiza 0014, 0015, 0016, este índice e o README) | [0017-devolutivas-categorias-e-forms.md](0017-devolutivas-categorias-e-forms.md) |
 
-**Próximo número livre: 0014**
+**Próximo número livre: 0018**

@@ -8,7 +8,7 @@ import { band, box, size, u } from "@/lib/cpa-box";
 
 export const metadata: Metadata = { title: "Pesquisa CPA · Portal CPA" };
 
-/** Página provisória: destino do botão "Acessar". O formulário da pesquisa ainda não foi especificado. */
+/** Página provisória: destino do botão "Acessar" no protótipo. Na versão final o botão abre direto o Google Forms da pesquisa ativa (campo `form_link` da tabela `cpas`) e esta página deixa de ser necessária (registro 0017). */
 export default function PaginaPesquisa() {
   return (
     <div className="cpa-root">
@@ -28,7 +28,7 @@ export default function PaginaPesquisa() {
 
         <main style={{ display: "contents" }}>
           <p className="cpa-note cpa-center" style={size(600, 40)}>
-            O formulário de preenchimento da pesquisa será construído nesta área.
+            O botão Acessar abrirá o formulário do Google Forms da pesquisa ativa.
           </p>
         </main>
       </div>

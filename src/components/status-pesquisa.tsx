@@ -5,9 +5,10 @@ import { box, u } from "@/lib/cpa-box";
 /**
  * PROTÓTIPO VISUAL: banner da pesquisa ativa e atalhos, com texto fixo.
  * Coordenadas relativas ao bloco central (782 × 223 no mockup, canto em x=88, y=198).
- * Os dois últimos botões (Resultados e Responder devolutivas) são só para administrador.
- * TODO (implementação): período e estado vindos do back-end; exibir os botões de administrador
- * apenas para o perfil "administrador".
+ * Os dois últimos botões (Resultados e Responder devolutivas) não aparecem para o perfil aluno
+ * (inicialmente só existem Aluno e Coordenação; a coordenação vê tudo; registro 0017).
+ * TODO (implementação): período e estado vindos do back-end; exibir esses botões conforme o perfil (`roles`).
+ * TODO (implementação): trocar o Link do botão "Acessar" por <a href={form_link} target="_blank" rel="noopener noreferrer"> (Google Forms da pesquisa ativa).
  */
 export function StatusPesquisa() {
   return (
@@ -62,7 +63,7 @@ export function StatusPesquisa() {
       <Button
         asChild
         className="cpa-btn"
-        data-somente="administrador"
+        data-somente="coordenacao"
         style={box(448, 144, 122, 79, { borderRadius: u(28) })}
       >
         <Link href="/resultados" aria-label="Resultados da pesquisa (administrador)" title="Resultados da pesquisa">
@@ -88,7 +89,7 @@ export function StatusPesquisa() {
       <Button
         asChild
         className="cpa-btn"
-        data-somente="administrador"
+        data-somente="coordenacao"
         style={box(610, 144, 122, 79, { borderRadius: u(28) })}
       >
         <Link

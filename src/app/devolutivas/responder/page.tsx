@@ -10,8 +10,8 @@ import { band, box, size, u } from "@/lib/cpa-box";
 export const metadata: Metadata = { title: "Responder Devolutiva · Portal CPA" };
 
 /**
- * Tela exclusiva de administradores (visual).
- * TODO (implementação): restringir ao perfil "administrador" e identificar qual manifestação está sendo respondida.
+ * Tela restrita à coordenação (o perfil aluno não acessa) (visual).
+ * TODO (implementação): restringir por perfil (tabela `roles`) e definir como a devolutiva é criada (título, área, categoria, motivo).
  */
 export default function PaginaResponderDevolutiva() {
   return (
@@ -33,7 +33,7 @@ export default function PaginaResponderDevolutiva() {
         <main style={{ display: "contents" }}>
           <section
             className="cpa-card cpa-center"
-            style={{ ...size(640, 360), top: `calc(50% + ${u(24)})` }}
+            style={{ ...size(640, 400), top: `calc(50% + ${u(32)})` }}
             aria-label="Resposta da devolutiva"
           >
             <FormResposta />

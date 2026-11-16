@@ -416,6 +416,27 @@ body:has(.cpa-root) {
   font-size: calc(16 * var(--u));
   line-height: 1.2;
 }
+
+.cpa-modal.cpa-modal [data-slot="dialog-close"] {
+  top: calc(26 * var(--u)) !important;
+  left: calc(10 * var(--u)) !important;
+  right: auto !important;
+  width: calc(28 * var(--u)) !important;
+  height: calc(28 * var(--u)) !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: var(--cpa-panel) !important;
+  color: var(--cpa-line) !important;
+  box-shadow: none !important;
+}
+
+.cpa-modal.cpa-modal [data-slot="dialog-close"]:hover {
+  background: var(--cpa-panel-light) !important;
+}
+
 .cpa-modal .cpa-m-title {
   display: flex;
   align-items: center;

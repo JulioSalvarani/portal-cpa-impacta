@@ -1,45 +1,45 @@
-import { ORDEM_STATUS, ROTULO_BARRA, type StatusDevolutiva } from "@/lib/devolutivas-data";
+import { CATEGORIAS_RESPOSTA, ORDEM_BARRAS, type CategoriaResposta } from "@/lib/devolutivas-data";
 import { u } from "@/lib/cpa-box";
-
-const CLASSE_BARRA: Record<StatusDevolutiva, string> = {
-  "nao-procede": "cpa-bar-negado",
-  "em-analise": "cpa-bar-analise",
-  "concluido": "cpa-bar-concluido",
-};
 
 /** Altura de cada unidade do gráfico, em px do mockup (6 unidades = 102 px). */
 const PX_POR_UNIDADE = 17;
 
 type Props = {
-  contagem: Record<StatusDevolutiva, number>;
+  contagem: Record<string, number>;
   ano: number;
 };
 
-/** Gráfico de barras: vermelha (Não Procedidas), amarela (Em Análise), verde (Procedidas). */
+/**
+ * Gráfico de barras da Central: uma barra por categoria da resposta (Impertinente, Inapto,
+ * Resolvido). O nome e a cor de cada barra vêm da categoria (do banco de dados).
+ */
 export function GraficoStatus({ contagem, ano }: Props) {
-  const resumo = ORDEM_STATUS.map((s) => `${ROTULO_BARRA[s]}: ${contagem[s]}`).join("; ");
+  const categorias = ORDEM_BARRAS.map((id) => CATEGORIAS_RESPOSTA.find((c) => c.id === id)).filter(
+    (c): c is CategoriaResposta => c !== undefined,
+  );
+  const resumo = categorias.map((c) => `${c.rotulo}: ${contagem[c.id] ?? 0}`).join("; ");
 
   return (
     <figure>
       <div
         role="img"
-        aria-label={`Sugestões de ${ano} por tipo de deferimento. ${resumo}.`}
+        aria-label={`Devolutivas de ${ano} por categoria de resposta. ${resumo}.`}
         className="cpa-chart"
       >
-        {ORDEM_STATUS.map((status) => (
-          <div key={status} className="cpa-col">
-            <b>{contagem[status]}</b>
-            <i
-              className={CLASSE_BARRA[status]}
-              style={{ height: u(contagem[status] === 0 ? 3 : contagem[status] * PX_POR_UNIDADE) }}
-            />
-          </div>
-        ))}
+        {categorias.map((c) => {
+          const n = contagem[c.id] ?? 0;
+          return (
+            <div key={c.id} className="cpa-col">
+              <b>{n}</b>
+              <i style={{ background: c.cor, height: u(n === 0 ? 3 : n * PX_POR_UNIDADE) }} />
+            </div>
+          );
+        })}
       </div>
 
       <figcaption className="cpa-labs">
-        {ORDEM_STATUS.map((status) => (
-          <span key={status}>{ROTULO_BARRA[status]}</span>
+        {categorias.map((c) => (
+          <span key={c.id}>{c.rotulo}</span>
         ))}
       </figcaption>
     </figure>

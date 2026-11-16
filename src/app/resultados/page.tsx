@@ -11,8 +11,8 @@ import { CPAS, QUESTOES } from "@/lib/resultados-data";
 export const metadata: Metadata = { title: "Resultados da Pesquisa CPA · Portal CPA" };
 
 /**
- * Tela exclusiva de administradores (visual): um dropdown por CPA semestral.
- * TODO (implementação): restringir o acesso ao perfil "administrador" e carregar os resultados reais.
+ * Tela restrita à coordenação (o perfil aluno não acessa) (visual): um dropdown por CPA semestral.
+ * TODO (implementação): restringir por perfil (tabela `roles`) e carregar os resultados reais (respostas do Google Forms).
  */
 export default function PaginaResultados() {
   return (
