@@ -610,13 +610,15 @@ model profiles {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model respostas {
-  area     String
-  status   String
-  ano      Decimal @db.Decimal
-  resposta String? @default("")
-  areas    areas   @relation(fields: [area], references: [nome_area], onDelete: NoAction)
+  area             String
+  status           BigInt
+  ano              Decimal          @db.Decimal
+  resposta         String?          @default("")
+  id               BigInt           @id
+  title            String?
+  areas            areas            @relation(fields: [area], references: [nome_area], onDelete: NoAction)
+  status_respostas status_respostas @relation(fields: [status], references: [id], onDelete: SetNull)
 
-  @@id([area, status, ano])
   @@schema("public")
 }
 
@@ -625,6 +627,16 @@ model roles {
   id       BigInt     @id @default(autoincrement())
   role     String?    @unique
   profiles profiles[]
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model status_respostas {
+  id        BigInt      @id @default(autoincrement())
+  status    String?
+  hex       String?
+  respostas respostas[]
 
   @@schema("public")
 }
