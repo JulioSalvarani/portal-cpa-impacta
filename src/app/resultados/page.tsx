@@ -7,6 +7,8 @@ import { CartaoCpa } from "@/components/resultados/cartao-cpa";
 import { Button } from "@/components/ui/button";
 import { band, box, u } from "@/lib/cpa-box";
 import { CPAS, QUESTOES } from "@/lib/resultados-data";
+import { exigirAdmin } from "@/lib/auth";
+
 
 export const metadata: Metadata = { title: "Resultados da Pesquisa CPA · Portal CPA" };
 
@@ -14,7 +16,9 @@ export const metadata: Metadata = { title: "Resultados da Pesquisa CPA · Portal
  * Tela restrita à coordenação (o perfil aluno não acessa) (visual): um dropdown por CPA semestral.
  * TODO (implementação): restringir por perfil (tabela `roles`) e carregar os resultados reais (respostas do Google Forms).
  */
-export default function PaginaResultados() {
+export default async function PaginaResultados() {
+  await exigirAdmin();
+
   return (
     <div className="cpa-root">
       <div className="cpa-stage">

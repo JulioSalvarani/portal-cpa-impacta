@@ -6,6 +6,7 @@ import { BarraInstitucional } from "@/components/barra-institucional";
 import { FormResposta } from "@/components/devolutivas/form-resposta";
 import { Button } from "@/components/ui/button";
 import { band, box, size, u } from "@/lib/cpa-box";
+import { exigirAdmin } from "@/lib/auth";
 
 export const metadata: Metadata = { title: "Responder Devolutiva · Portal CPA" };
 
@@ -13,7 +14,8 @@ export const metadata: Metadata = { title: "Responder Devolutiva · Portal CPA" 
  * Tela restrita à coordenação (o perfil aluno não acessa) (visual).
  * TODO (implementação): restringir por perfil (tabela `roles`) e definir como a devolutiva é criada (título, área, categoria, motivo).
  */
-export default function PaginaResponderDevolutiva() {
+export default async function PaginaResponderDevolutiva() {
+  await exigirAdmin();
   return (
     <div className="cpa-root">
       <div className="cpa-stage">

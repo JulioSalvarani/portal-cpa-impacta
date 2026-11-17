@@ -242,6 +242,18 @@ body:has(.cpa-root) {
   color: var(--cpa-navy);
 }
 
+.cpa-stage .cpa-logout {
+  gap: calc(8 * var(--u));
+  font-size: calc(16 * var(--u));
+  border-radius: calc(19 * var(--u));
+}
+
+.cpa-stage .cpa-logout:hover {
+  background: var(--cpa-bar-negado);
+  border-color: var(--cpa-line);
+  filter: none;
+}
+
 /* ---------- 3. central de devolutivas ---------- */
 .cpa-panel {
   background: var(--cpa-panel);

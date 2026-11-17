@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Undo2, UserRound } from "lucide-react";
+import { LogOut, Undo2, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { band, size, u } from "@/lib/cpa-box";
+import { logoutAction } from "@/app/login/actions";
 
 /**
  * PROTÓTIPO VISUAL: nome e perfil são texto fixo.
@@ -52,6 +53,27 @@ export function HomeHeader() {
           <UserRound aria-hidden style={{ width: u(26), height: u(26) }} />
         </span>
       </div>
+      <form
+        action={logoutAction}
+        style={{
+          position: "absolute",
+          right: u(12),
+          top: u(68),
+        }}
+      >
+        <Button
+          type="submit"
+          className="cpa-btn cpa-btn--line cpa-logout"
+          style={size(136, 38)}
+          aria-label="Sair da conta"
+        >
+          <LogOut
+            aria-hidden
+            style={{ width: u(17), height: u(17), flex: "none" }}
+          />
+          <span>Sair</span>
+        </Button>
+      </form>
     </header>
   );
 }

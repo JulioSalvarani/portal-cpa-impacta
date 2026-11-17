@@ -1,22 +1,21 @@
-import Link from "next/link";
+"use client";
+
+import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { box, u } from "@/lib/cpa-box";
+import { loginAction } from "@/app/login/actions";
 
-/**
- * PROTÓTIPO VISUAL: sem validação e sem envio.
- * As coordenadas são relativas ao cartão cinza do login (que está em x=187, y=128 no mockup).
- * TODO (implementação): envolver em <form>, ligar a autenticação e trocar o Link do
- * botão "Entrar" por type="submit".
- */
 export function LoginForm() {
+  const [state, formAction, isPending] = useActionState(loginAction, null);
+
   return (
-    <>
+    <form action={formAction}>
       <Label
         htmlFor="email"
         className="cpa-label"
-        style={box(75, 84, 94, 30, { fontSize: u(18), lineHeight: u(30) })}
+        style={box(75, 84, 94, 30)}
       >
         E-Mail
       </Label>
@@ -25,14 +24,15 @@ export function LoginForm() {
         name="email"
         type="email"
         autoComplete="username"
+        required
         className="cpa-field"
-        style={box(198, 84, 307, 30, { fontSize: u(16) })}
+        style={box(198, 84, 307, 30)}
       />
 
       <Label
         htmlFor="senha"
         className="cpa-label"
-        style={box(75, 151, 94, 30, { fontSize: u(18), lineHeight: u(30) })}
+        style={box(75, 151, 94, 30)}
       >
         Senha
       </Label>
@@ -41,17 +41,33 @@ export function LoginForm() {
         name="senha"
         type="password"
         autoComplete="current-password"
+        required
         className="cpa-field"
-        style={box(198, 151, 307, 30, { fontSize: u(16) })}
+        style={box(198, 151, 307, 30)}
       />
 
+      {state?.erro && (
+        <p
+          role="alert"
+          style={{
+            ...box(75, 188, 430, 22),
+            color: "#c40000",
+            fontSize: u(13),
+            textAlign: "center",
+          }}
+        >
+          {state.erro}
+        </p>
+      )}
+
       <Button
-        asChild
+        type="submit"
+        disabled={isPending}
         className="cpa-btn cpa-btn--line"
-        style={box(226, 218, 131, 49, { borderRadius: u(25), fontSize: u(17) })}
+        style={box(226, 218, 131, 49)}
       >
-        <Link href="/inicio">Entrar</Link>
+        {isPending ? "Entrando..." : "Entrar"}
       </Button>
-    </>
+    </form>
   );
 }
