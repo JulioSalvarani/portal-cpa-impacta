@@ -592,7 +592,6 @@ model cpas {
   id                BigInt   @id @default(autoincrement())
   form_link         String   @unique @db.VarChar
   ano               Decimal? @db.Decimal
-  semestre          Int?     @db.SmallInt
   title             String?
   is_active         Boolean  @default(false)
   perfis_permitidos String[] @default(["aluno", "coordenador", "avaliador_externo", "admin"])

@@ -1,8 +1,9 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
-import { Download, FileUp } from "lucide-react";
+import { Download, FileUp, Trash2 } from "lucide-react";
 import {
+  excluirRelatorioAction,
   publicarRelatorioAction,
   type EstadoUploadRelatorio,
 } from "@/app/actions/relatorios";
@@ -22,12 +23,16 @@ export function PainelRelatorios({
 }: Props) {
   const [filtro, setFiltro] = useState<"Todos" | TipoRelatorio>("Todos");
   const [nomeArquivo, setNomeArquivo] = useState<string>("Selecionar PDF");
+  const [excluindoId, setExcluindoId] = useState<number | null>(null);
+  const [confirmarExclusaoId, setConfirmarExclusaoId] = useState<number | null>(null);
+  const [feedbackLista, setFeedbackLista] = useState<{ ok: boolean; texto: string } | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const [estadoUpload, formAction, enviando] = useActionState<
     EstadoUploadRelatorio,
     FormData
   >(async (prevState, formData) => {
+    setFeedbackLista(null);
     const res = await publicarRelatorioAction(prevState, formData);
     if (res?.ok) {
       formRef.current?.reset();
@@ -35,6 +40,22 @@ export function PainelRelatorios({
     }
     return res;
   }, null);
+
+  async function handleExcluir(docId: number) {
+    if (confirmarExclusaoId !== docId) {
+      setConfirmarExclusaoId(docId);
+      return;
+    }
+
+    setExcluindoId(docId);
+    setConfirmarExclusaoId(null);
+    setFeedbackLista(null);
+
+    const res = await excluirRelatorioAction(docId);
+
+    setExcluindoId(null);
+    setFeedbackLista({ ok: res.ok, texto: res.mensagem });
+  }
 
   const filtrados =
     filtro === "Todos"
@@ -105,16 +126,16 @@ export function PainelRelatorios({
             </Button>
           </form>
 
-          {estadoUpload && (
+          {(estadoUpload || feedbackLista) && (
             <p
               role="status"
               style={{
                 fontSize: u(13),
                 marginTop: u(-6),
-                color: estadoUpload.ok ? "#0a6b0a" : "#b00000",
+                color: (estadoUpload?.ok ?? feedbackLista?.ok) ? "#0a6b0a" : "#b00000",
               }}
             >
-              {estadoUpload.mensagem}
+              {estadoUpload?.mensagem ?? feedbackLista?.texto}
             </p>
           )}
         </>
@@ -150,34 +171,62 @@ export function PainelRelatorios({
             Nenhum documento publicado nesta categoria.
           </div>
         ) : (
-          filtrados.map((doc) => (
-            <article key={doc.id} className="cpa-rel-card">
-              <div className="cpa-rel-meta">
-                <div className="cpa-rel-badges">
-                  <span className="cpa-rel-badge">{doc.tipo}</span>
-                  <span className="cpa-rel-year">{doc.ano}</span>
-                </div>
-                <h2 className="cpa-rel-title">{doc.titulo}</h2>
-              </div>
+          filtrados.map((doc) => {
+            const ocupada = excluindoId === doc.id;
+            const confirmando = confirmarExclusaoId === doc.id;
 
-              <Button
-                asChild
-                className="cpa-btn cpa-btn--line"
-                style={{
-                  height: u(38),
-                  padding: `0 ${u(16)}`,
-                  borderRadius: u(19),
-                  fontSize: u(14),
-                  gap: u(8),
-                }}
-              >
-                <a href={doc.arquivo_url} target="_blank" rel="noopener noreferrer">
-                  <Download aria-hidden style={{ width: u(16), height: u(16) }} />
-                  Baixar PDF
-                </a>
-              </Button>
-            </article>
-          ))
+            return (
+              <article key={doc.id} className="cpa-rel-card">
+                <div className="cpa-rel-meta">
+                  <div className="cpa-rel-badges">
+                    <span className="cpa-rel-badge">{doc.tipo}</span>
+                    <span className="cpa-rel-year">{doc.ano}</span>
+                  </div>
+                  <h2 className="cpa-rel-title">{doc.titulo}</h2>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: u(8), flex: "none" }}>
+                  <Button
+                    asChild
+                    className="cpa-btn cpa-btn--line"
+                    style={{
+                      height: u(38),
+                      padding: `0 ${u(16)}`,
+                      borderRadius: u(19),
+                      fontSize: u(14),
+                      gap: u(8),
+                    }}
+                  >
+                    <a href={doc.arquivo_url} target="_blank" rel="noopener noreferrer">
+                      <Download aria-hidden style={{ width: u(16), height: u(16) }} />
+                      Baixar PDF
+                    </a>
+                  </Button>
+
+                  {isAdmin && (
+                    <Button
+                      type="button"
+                      disabled={ocupada}
+                      onClick={() => handleExcluir(doc.id)}
+                      className="cpa-btn cpa-btn--ghost"
+                      style={{
+                        height: u(38),
+                        padding: `0 ${u(12)}`,
+                        borderRadius: u(19),
+                        fontSize: u(13),
+                        color: "#b00000",
+                        gap: u(5),
+                      }}
+                      title="Excluir relatório"
+                    >
+                      <Trash2 aria-hidden style={{ width: u(15), height: u(15) }} />
+                      {confirmando ? "Confirmar?" : "Excluir"}
+                    </Button>
+                  )}
+                </div>
+              </article>
+            );
+          })
         )}
       </div>
     </div>

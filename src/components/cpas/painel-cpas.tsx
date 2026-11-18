@@ -69,7 +69,7 @@ export function PainelCpas({ cpasIniciais }: Props) {
           name="title"
           type="text"
           required
-          placeholder="Título (ex.: Pesquisa CPA 2026/2)"
+          placeholder="Título (ex.: Pesquisa CPA 2026)"
           className="cpa-field"
         />
 
@@ -104,16 +104,6 @@ export function PainelCpas({ cpasIniciais }: Props) {
           aria-label="Ano"
           className="cpa-field"
         />
-
-        <select
-          name="semestre"
-          defaultValue="2"
-          aria-label="Semestre"
-          className="cpa-field cpa-select"
-        >
-          <option value="1">1º Sem</option>
-          <option value="2">2º Sem</option>
-        </select>
 
         <select
           name="is_active"
@@ -181,7 +171,7 @@ export function PainelCpas({ cpasIniciais }: Props) {
                 </span>
 
                 <span style={{ color: "#333", fontSize: u(13) }}>
-                  {cpa.ano}/{cpa.semestre}
+                  {cpa.ano}
                 </span>
 
                 <a

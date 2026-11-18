@@ -4,7 +4,6 @@ export type CpaItem = {
   id: number;
   title: string;
   ano: number;
-  semestre: number;
   form_link: string;
   is_active: boolean;
   perfil_permitido: PerfilCpa;

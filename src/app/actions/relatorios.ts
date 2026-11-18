@@ -11,6 +11,9 @@ export type EstadoUploadRelatorio = {
   mensagem: string;
 } | null;
 
+const BUCKET_RELATORIOS = "relatorios-cpa";
+const MARCADOR_PUBLIC_URL = `/storage/v1/object/public/${BUCKET_RELATORIOS}/`;
+
 const TIPOS_VALIDOS = new Set<TipoRelatorio>([
   "Relatório de Autoavaliação",
   "Boletim Informativo",
@@ -23,6 +26,14 @@ function sanitizarNomeArquivo(nome: string): string {
     .replace(/[^a-zA-Z0-9._-]/g, "-")
     .replace(/-+/g, "-")
     .toLowerCase();
+}
+
+function extrairCaminhoStorage(arquivoUrl: string): string | null {
+  const idx = arquivoUrl.indexOf(MARCADOR_PUBLIC_URL);
+  if (idx === -1) return null;
+
+  const caminhoBruto = arquivoUrl.slice(idx + MARCADOR_PUBLIC_URL.length).split("?")[0];
+  return caminhoBruto ? decodeURIComponent(caminhoBruto) : null;
 }
 
 export async function publicarRelatorioAction(
@@ -67,7 +78,7 @@ export async function publicarRelatorioAction(
     const buffer = Buffer.from(await arquivo.arrayBuffer());
 
     const { error: uploadError } = await supabase.storage
-      .from("relatorios-cpa")
+      .from(BUCKET_RELATORIOS)
       .upload(caminhoStorage, buffer, {
         contentType: "application/pdf",
         upsert: false,
@@ -83,7 +94,7 @@ export async function publicarRelatorioAction(
 
     const {
       data: { publicUrl },
-    } = supabase.storage.from("relatorios-cpa").getPublicUrl(caminhoStorage);
+    } = supabase.storage.from(BUCKET_RELATORIOS).getPublicUrl(caminhoStorage);
 
     await prisma.relatorios.create({
       data: {
@@ -105,6 +116,64 @@ export async function publicarRelatorioAction(
     return {
       ok: false,
       mensagem: "Não foi possível salvar o documento no banco.",
+    };
+  }
+}
+
+export async function excluirRelatorioAction(
+  idRaw: number | string,
+): Promise<{ ok: boolean; mensagem: string }> {
+  await exigirAdmin();
+
+  let id: bigint;
+  try {
+    id = BigInt(idRaw);
+  } catch {
+    return {
+      ok: false,
+      mensagem: "Identificador do relatório inválido.",
+    };
+  }
+
+  try {
+    const relatorio = await prisma.relatorios.findUnique({
+      where: { id },
+    });
+
+    if (!relatorio) {
+      return {
+        ok: false,
+        mensagem: "Relatório não encontrado.",
+      };
+    }
+
+    const caminhoStorage = extrairCaminhoStorage(relatorio.arquivo_url);
+    if (caminhoStorage) {
+      const supabase = await createClient();
+      const { error: storageError } = await supabase.storage
+        .from(BUCKET_RELATORIOS)
+        .remove([caminhoStorage]);
+
+      if (storageError) {
+        console.warn("Aviso ao remover PDF do Storage:", storageError.message);
+      }
+    }
+
+    await prisma.relatorios.delete({
+      where: { id },
+    });
+
+    revalidatePath("/relatorios");
+
+    return {
+      ok: true,
+      mensagem: "Relatório excluído com sucesso.",
+    };
+  } catch (error) {
+    console.error("Erro ao excluir relatório:", error);
+    return {
+      ok: false,
+      mensagem: "Não foi possível excluir o relatório.",
     };
   }
 }

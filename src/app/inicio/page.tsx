@@ -17,7 +17,7 @@ export default async function PaginaInicial() {
     where: {
       perfis_permitidos: { has: usuario.role },
     },
-    orderBy: [{ is_active: "desc" }, { ano: "desc" }, { semestre: "desc" }, { id: "desc" }],
+    orderBy: [{ is_active: "desc" }, { ano: "desc" }, { id: "desc" }],
   });
   
 

@@ -16,14 +16,13 @@ export default async function PaginaCpas() {
   await exigirAdmin();
 
   const registros = await prisma.cpas.findMany({
-    orderBy: [{ is_active: "desc" }, { ano: "desc" }, { semestre: "desc" }, { id: "desc" }],
+    orderBy: [{ is_active: "desc" }, { ano: "desc" }, { id: "desc" }],
   });
 
   const cpas: CpaItem[] = registros.map((item) => ({
     id: Number(item.id),
     title: item.title ?? "Pesquisa CPA",
     ano: Number(item.ano ?? new Date().getFullYear()),
-    semestre: Number(item.semestre ?? 1),
     form_link: item.form_link,
     is_active: Boolean(item.is_active),
     perfil_permitido: normalizarPerfil(item.perfis_permitidos?.[0]),

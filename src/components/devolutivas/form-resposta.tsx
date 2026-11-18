@@ -3,12 +3,12 @@
 import { useActionState, useEffect, useRef } from "react";
 import {
   criarDevolutivaAction,
+  type DestinoDevolutiva,
   type EstadoFormDevolutiva,
 } from "@/app/actions/devolutivas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { PerfilCpa } from "@/lib/auth";
 import { box, u } from "@/lib/cpa-box";
 import type { OpcaoStatusFormulario } from "@/lib/devolutivas-data";
 
@@ -17,11 +17,9 @@ type Props = {
   categorias: OpcaoStatusFormulario[];
 };
 
-const PERFIS_OPCOES: { valor: PerfilCpa; rotulo: string }[] = [
-  { valor: "aluno", rotulo: "Aluno" },
-  { valor: "coordenador", rotulo: "Coordenador" },
-  { valor: "avaliador_externo", rotulo: "Avaliador Externo" },
-  { valor: "admin", rotulo: "Admin" },
+const DESTINOS_OPCOES: { valor: DestinoDevolutiva; rotulo: string }[] = [
+  { valor: "alunos", rotulo: "Devolutiva para Alunos" },
+  { valor: "corpo_funcional", rotulo: "Devolutiva para Corpo funcional" },
 ];
 
 export function FormResposta({ areas, categorias }: Props) {
@@ -108,22 +106,22 @@ export function FormResposta({ areas, categorias }: Props) {
         className="cpa-flabel"
         style={box(24, 136, 592, 20, { fontSize: u(15) })}
       >
-        Perfis com acesso (visibilidade no mural)
+        Destinatário (Coordenação, Avaliador Externo e Admin visualizam todas)
       </span>
       <div
-        role="group"
-        aria-label="Perfis com acesso"
+        role="radiogroup"
+        aria-label="Destinatário da devolutiva"
         style={box(24, 158, 592, 28, {
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          gap: u(12),
+          justifyContent: "flex-start",
+          gap: u(36),
           fontSize: u(14),
         })}
       >
-        {PERFIS_OPCOES.map((perfil) => (
+        {DESTINOS_OPCOES.map((destino) => (
           <label
-            key={perfil.valor}
+            key={destino.valor}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -132,13 +130,13 @@ export function FormResposta({ areas, categorias }: Props) {
             }}
           >
             <input
-              type="checkbox"
-              name="perfis"
-              value={perfil.valor}
-              defaultChecked
+              type="radio"
+              name="destino"
+              value={destino.valor}
+              defaultChecked={destino.valor === "alunos"}
               style={{ width: u(15), height: u(15), accentColor: "var(--cpa-navy)" }}
             />
-            <span>{perfil.rotulo}</span>
+            <span>{destino.rotulo}</span>
           </label>
         ))}
       </div>

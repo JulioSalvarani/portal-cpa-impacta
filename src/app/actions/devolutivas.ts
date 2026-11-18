@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { exigirAdmin } from "@/lib/auth";
+import { exigirAdmin, type PerfilCpa } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export type EstadoFormDevolutiva = {
@@ -9,26 +9,24 @@ export type EstadoFormDevolutiva = {
   mensagem: string;
 } | null;
 
-const PERFIS_VALIDOS = new Set([
-  "aluno",
-  "coordenador",
-  "avaliador_externo",
-  "admin",
-]);
+export type DestinoDevolutiva = "corpo_funcional" | "alunos";
+
+const PERFIS_POR_DESTINO: Record<DestinoDevolutiva, PerfilCpa[]> = {
+  corpo_funcional: ["coordenador", "avaliador_externo", "admin"],
+  alunos: ["aluno", "coordenador", "avaliador_externo", "admin"],
+};
 
 function extrairDadosDevolutiva(formData: FormData) {
   const titulo = String(formData.get("titulo") ?? "").trim();
   const area = String(formData.get("area") ?? "").trim();
   const statusRaw = String(formData.get("statusId") ?? "").trim();
   const motivo = String(formData.get("motivo") ?? "").trim();
-  const perfisPermitidos = Array.from(
-    new Set(
-      formData
-        .getAll("perfis")
-        .map((valor) => String(valor).trim())
-        .filter((valor) => PERFIS_VALIDOS.has(valor)),
-    ),
-  );
+  const destinoRaw = String(formData.get("destino") ?? "").trim();
+
+  const perfisPermitidos =
+    destinoRaw === "corpo_funcional" || destinoRaw === "alunos"
+      ? PERFIS_POR_DESTINO[destinoRaw]
+      : [];
 
   return { titulo, area, statusRaw, motivo, perfisPermitidos };
 }
@@ -52,7 +50,7 @@ export async function criarDevolutivaAction(
   if (perfisPermitidos.length === 0) {
     return {
       ok: false,
-      mensagem: "Selecione pelo menos um perfil para visualizar a devolutiva.",
+      mensagem: "Selecione o destinatário da devolutiva.",
     };
   }
 
@@ -133,7 +131,7 @@ export async function editarDevolutivaAction(
   if (perfisPermitidos.length === 0) {
     return {
       ok: false,
-      mensagem: "Selecione pelo menos um perfil.",
+      mensagem: "Selecione o destinatário da devolutiva.",
     };
   }
 

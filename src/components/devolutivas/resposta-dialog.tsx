@@ -6,6 +6,7 @@ import "@/app/cpa-resposta.css";
 import {
   editarDevolutivaAction,
   excluirDevolutivaAction,
+  type DestinoDevolutiva,
   type EstadoFormDevolutiva,
 } from "@/app/actions/devolutivas";
 import { EtiquetaCategoria } from "@/components/devolutivas/etiqueta-categoria";
@@ -32,11 +33,9 @@ type Props = {
   categorias?: OpcaoStatusFormulario[];
 };
 
-const PERFIS_OPCOES: { valor: PerfilCpa; rotulo: string }[] = [
-  { valor: "aluno", rotulo: "Aluno" },
-  { valor: "coordenador", rotulo: "Coordenador" },
-  { valor: "avaliador_externo", rotulo: "Aval. Ext." },
-  { valor: "admin", rotulo: "Admin" },
+const DESTINOS_OPCOES: { valor: DestinoDevolutiva; rotulo: string }[] = [
+  { valor: "alunos", rotulo: "Devolutiva para Alunos" },
+  { valor: "corpo_funcional", rotulo: "Devolutiva para Corpo funcional" },
 ];
 
 export function RespostaDialog({
@@ -93,6 +92,9 @@ export function RespostaDialog({
       "admin",
     ],
   );
+  const destinoAtual: DestinoDevolutiva = perfisAtuais.has("aluno")
+    ? "alunos"
+    : "corpo_funcional";
 
   return (
     <Dialog open={aberto} onOpenChange={handleOpenChange}>
@@ -176,9 +178,11 @@ export function RespostaDialog({
             </select>
 
             <span className="cpa-m-label" style={{ left: u(18), top: u(114) }}>
-              Perfis com acesso
+              Destinatário da devolutiva
             </span>
             <div
+              role="radiogroup"
+              aria-label="Destinatário da devolutiva"
               style={box(16, 131, 444, 24, {
                 display: "flex",
                 alignItems: "center",
@@ -187,9 +191,9 @@ export function RespostaDialog({
                 fontSize: u(13),
               })}
             >
-              {PERFIS_OPCOES.map((p) => (
+              {DESTINOS_OPCOES.map((d) => (
                 <label
-                  key={p.valor}
+                  key={d.valor}
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -198,13 +202,13 @@ export function RespostaDialog({
                   }}
                 >
                   <input
-                    type="checkbox"
-                    name="perfis"
-                    value={p.valor}
-                    defaultChecked={perfisAtuais.has(p.valor)}
+                    type="radio"
+                    name="destino"
+                    value={d.valor}
+                    defaultChecked={destinoAtual === d.valor}
                     style={{ width: u(14), height: u(14) }}
                   />
-                  <span>{p.rotulo}</span>
+                  <span>{d.rotulo}</span>
                 </label>
               ))}
             </div>
