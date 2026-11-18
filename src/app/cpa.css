@@ -1,15 +1,13 @@
 /*
- * Estilo das telas do Portal CPA (protótipo visual, registros 0010 e 0011).
+ * Estilo das telas do Portal CPA (atualizado conforme Registro nº 0019).
  *
- * Este arquivo NÃO depende do Tailwind nem do globals.css: usa só CSS puro.
- * As medidas vêm do mockup 008 (moldura de 960 × 540 px). A variável --u é "1 px do mockup"
- * ajustado à janela: as barras acompanham a largura e o conteúdo mantém as proporções do mockup.
- * Exemplo: width: calc(187 * var(--u)) equivale a 187 px no mockup.
+ * Geometria em unidades proporcionais --u (moldura de referência 960 × 540 px)
+ * via helpers box(), size(), band() e u() de src/lib/cpa-box.ts.
+ * Inclui adaptação responsiva para telas estreitas (@media max-width: 768px).
  */
-@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
 
 :root {
-  /* 1 unidade = 1 px do mockup, no maior tamanho que cabe na janela (largura ou altura) */
+  /* 1 unidade = 1 px do mockup, no maior tamanho que cabe na janela */
   --u: min(calc(100vw / 960), calc(100vh / 540));
 
   --cpa-navy: #012a55;
@@ -26,10 +24,10 @@
   --cpa-bar-analise: #ffe600;
   --cpa-bar-concluido: #00c800;
 
-  --cpa-mono: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --cpa-mono: var(--font-ui), "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
-/* As telas ocupam a janela inteira, sem rolagem da página */
+/* As telas ocupam a janela inteira no desktop, sem rolagem da página */
 html:has(.cpa-root),
 body:has(.cpa-root) {
   margin: 0;
@@ -156,6 +154,12 @@ body:has(.cpa-root) {
 .cpa-stage .cpa-btn--ghost:hover {
   background: transparent;
 }
+.cpa-stage .cpa-btn--disabled,
+.cpa-stage .cpa-btn[aria-disabled="true"] {
+  opacity: 0.55;
+  pointer-events: none;
+  cursor: not-allowed;
+}
 
 /* ---------- 1. login ---------- */
 .cpa-net {
@@ -186,11 +190,17 @@ body:has(.cpa-root) {
   padding: 0 calc(12 * var(--u));
   box-shadow: none;
 }
+.cpa-form-error {
+  position: absolute;
+  text-align: center;
+  color: #a80000;
+  font-size: calc(12 * var(--u));
+  line-height: 1.2;
+}
 
 /* ---------- 2. painel principal ---------- */
 .cpa-home {
   background-color: #d8dde2;
-  /* Coloque a foto em public/images/home-bg.jpg. Sem ela, aparecem o círculo e a faixa de tijolo. */
   background-image:
     url("/images/home-bg.jpg"),
     radial-gradient(circle at 56% 52%, #fbfbfb 0 calc(330 * var(--u)), transparent calc(331 * var(--u))),
@@ -202,6 +212,10 @@ body:has(.cpa-root) {
 .cpa-home-header {
   display: flex;
   align-items: center;
+}
+.cpa-stage .cpa-logout:hover {
+  background: var(--cpa-bar-negado);
+  filter: none;
 }
 .cpa-banner {
   position: absolute;
@@ -221,14 +235,23 @@ body:has(.cpa-root) {
   border-radius: 50%;
   background: var(--cpa-dot);
 }
+.cpa-dot--closed {
+  background: var(--cpa-tag-negado);
+}
 .cpa-profile {
   display: flex;
   align-items: center;
   gap: calc(10 * var(--u));
-  padding-left: calc(12 * var(--u));
+  padding-left: calc(14 * var(--u));
+  border: 0;
   background: var(--cpa-navy);
   color: var(--cpa-on-navy);
   border-radius: calc(30 * var(--u)) 0 0 calc(30 * var(--u));
+  cursor: pointer;
+  text-align: left;
+}
+.cpa-profile:hover {
+  filter: brightness(1.18);
 }
 .cpa-avatar {
   display: grid;
@@ -240,18 +263,19 @@ body:has(.cpa-root) {
   border-radius: 50%;
   background: #e9e9e9;
   color: var(--cpa-navy);
+  flex: none;
 }
-
-.cpa-stage .cpa-logout {
-  gap: calc(8 * var(--u));
-  font-size: calc(16 * var(--u));
-  border-radius: calc(19 * var(--u));
+.cpa-shortcut {
+  flex-direction: column;
+  gap: calc(6 * var(--u));
+  padding: calc(6 * var(--u)) calc(4 * var(--u)) !important;
+  white-space: normal !important;
+  text-align: center;
+  line-height: 1.1;
 }
-
-.cpa-stage .cpa-logout:hover {
-  background: var(--cpa-bar-negado);
-  border-color: var(--cpa-line);
-  filter: none;
+.cpa-shortcut-label {
+  font-size: calc(11 * var(--u));
+  letter-spacing: -0.02em;
 }
 
 /* ---------- 3. central de devolutivas ---------- */
@@ -260,32 +284,8 @@ body:has(.cpa-root) {
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: calc(12 * var(--u));
 }
-.cpa-search {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: calc(8 * var(--u));
-  padding: 0 calc(12 * var(--u));
-  border-radius: calc(17 * var(--u));
-  background: var(--cpa-panel-light);
-  color: #555555;
-}
-.cpa-stage .cpa-search .cpa-search-input,
-.cpa-stage .cpa-search .cpa-search-input:focus-visible {
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--cpa-line);
-  box-shadow: none;
-  outline: none;
-  font-size: calc(14 * var(--u));
-}
 
-/* Fileira de cards com barra de rolagem horizontal de verdade */
+/* Fileira de cards com barra de rolagem horizontal */
 .cpa-years {
   position: absolute;
   display: flex;
@@ -318,7 +318,6 @@ body:has(.cpa-root) {
 
 .cpa-year {
   position: relative;
-  /* flex em coluna: um <button> centraliza o conteúdo na vertical por padrão */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -401,8 +400,7 @@ body:has(.cpa-root) {
   width: 33.33%;
 }
 
-/* ---------- 4. modal "mural de devolutivas" ---------- */
-/* Centralizado com margin:auto (sem transform/translate), para não somar com o translate do shadcn */
+/* ---------- 4. modal "mural de devolutivas" e modal de contato ---------- */
 .cpa-modal.cpa-modal {
   position: fixed !important;
   inset: 0 !important;
@@ -430,11 +428,11 @@ body:has(.cpa-root) {
 }
 
 .cpa-modal.cpa-modal [data-slot="dialog-close"] {
-  top: calc(26 * var(--u)) !important;
+  top: calc(29.5 * var(--u)) !important;
   left: calc(10 * var(--u)) !important;
   right: auto !important;
-  width: calc(28 * var(--u)) !important;
-  height: calc(28 * var(--u)) !important;
+  width: calc(24 * var(--u)) !important;
+  height: calc(24 * var(--u)) !important;
   padding: 0 !important;
   border-radius: 50% !important;
   display: inline-flex !important;
@@ -464,25 +462,78 @@ body:has(.cpa-root) {
   background: #d0d0d0;
   border: 1px solid #555555;
 }
-.cpa-modal .cpa-m-item {
+.cpa-modal .cpa-m-list {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  padding-right: calc(8 * var(--u));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.cpa-modal .cpa-m-list::-webkit-scrollbar {
+  width: calc(14 * var(--u));
+}
+.cpa-modal .cpa-m-list::-webkit-scrollbar-track {
+  background: var(--cpa-panel-light);
+  border-radius: calc(7 * var(--u));
+}
+.cpa-modal .cpa-m-list::-webkit-scrollbar-thumb {
+  background: #a8a8a8;
+  border: calc(3 * var(--u)) solid var(--cpa-panel-light);
+  border-radius: calc(7 * var(--u));
+}
+.cpa-modal .cpa-m-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--u));
+  flex: none;
+  min-height: calc(64 * var(--u));
   background: var(--cpa-navy);
   border-radius: calc(12 * var(--u));
+  padding: calc(8 * var(--u)) calc(14 * var(--u));
+}
+.cpa-modal .cpa-m-item--featured {
+  min-height: calc(122 * var(--u));
+  padding-bottom: calc(34 * var(--u));
+}
+.cpa-modal .cpa-m-item--compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--u));
+  min-height: calc(58 * var(--u));
 }
 .cpa-modal .cpa-m-text {
-  position: absolute;
+  flex: 1;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
   background: var(--cpa-panel);
   color: var(--cpa-line);
   border: 1px solid rgba(0, 0, 0, 0.33);
   border-radius: calc(4 * var(--u));
-  padding: calc(8 * var(--u)) calc(10 * var(--u));
-  font-size: calc(15 * var(--u));
-  line-height: 1.3;
+  padding: calc(6 * var(--u)) calc(10 * var(--u));
+  font-size: calc(14 * var(--u));
+  line-height: 1.25;
+  white-space: normal;
+  word-break: break-word;
+}
+.cpa-modal .cpa-m-text--full {
+  display: block;
+  width: 100%;
+  min-height: calc(72 * var(--u));
 }
 .cpa-modal .cpa-m-text--short {
+  display: block;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: calc(15 * var(--u));
+  line-height: 1.2;
 }
 
 /* Etiquetas de status (shadcn Badge) */
@@ -490,10 +541,12 @@ body:has(.cpa-root) {
 .cpa-modal .cpa-tag:hover {
   position: absolute;
   display: block;
+  min-width: calc(132 * var(--u));
   padding: 0 calc(12 * var(--u));
   border: 0;
   border-radius: calc(11 * var(--u));
   color: #000000;
+  text-align: center;
   box-shadow: none;
   white-space: nowrap;
   font-weight: 400;
@@ -511,8 +564,52 @@ body:has(.cpa-root) {
   background: var(--cpa-tag-concluido);
 }
 
-/* ---------- 5. resultados da pesquisa (administrador) ---------- */
-/* Lista de CPAs, um "dropdown" (details) por semestre */
+/* Modal de Contato da CPA ("i") */
+.cpa-modal .cpa-contact-box {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--cpa-navy);
+  color: var(--cpa-on-navy);
+  border-radius: calc(12 * var(--u));
+  padding: calc(18 * var(--u)) calc(20 * var(--u));
+}
+.cpa-modal .cpa-contact-desc {
+  background: var(--cpa-panel);
+  color: var(--cpa-line);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  border-radius: calc(8 * var(--u));
+  padding: calc(12 * var(--u)) calc(14 * var(--u));
+  font-size: calc(14 * var(--u));
+  line-height: 1.4;
+}
+.cpa-modal .cpa-contact-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(18 * var(--u));
+}
+.cpa-modal .cpa-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(8 * var(--u));
+  height: calc(44 * var(--u));
+  padding: 0 calc(20 * var(--u));
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: calc(22 * var(--u));
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cpa-on-navy);
+  font-size: calc(15 * var(--u));
+  text-decoration: none;
+  cursor: pointer;
+}
+.cpa-modal .cpa-contact-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ---------- 5. resultados da pesquisa (Google Data Studio) ---------- */
 .cpa-results {
   display: flex;
   flex-direction: column;
@@ -522,18 +619,21 @@ body:has(.cpa-root) {
   overscroll-behavior: contain;
 }
 .cpa-results::-webkit-scrollbar,
-.cpa-res-list::-webkit-scrollbar,
-.cpa-lines::-webkit-scrollbar {
+.cpa-embed-wrap::-webkit-scrollbar,
+.cpa-rel-list::-webkit-scrollbar,
+.cpa-perfis-list::-webkit-scrollbar {
   width: calc(18 * var(--u));
 }
 .cpa-results::-webkit-scrollbar-track,
-.cpa-res-list::-webkit-scrollbar-track,
-.cpa-lines::-webkit-scrollbar-track {
+.cpa-embed-wrap::-webkit-scrollbar-track,
+.cpa-rel-list::-webkit-scrollbar-track,
+.cpa-perfis-list::-webkit-scrollbar-track {
   background: transparent;
 }
 .cpa-results::-webkit-scrollbar-thumb,
-.cpa-res-list::-webkit-scrollbar-thumb,
-.cpa-lines::-webkit-scrollbar-thumb {
+.cpa-embed-wrap::-webkit-scrollbar-thumb,
+.cpa-rel-list::-webkit-scrollbar-thumb,
+.cpa-perfis-list::-webkit-scrollbar-thumb {
   background: #a6a6a6;
   border: calc(4 * var(--u)) solid transparent;
   background-clip: padding-box;
@@ -541,8 +641,9 @@ body:has(.cpa-root) {
 }
 @supports not selector(::-webkit-scrollbar) {
   .cpa-results,
-  .cpa-res-list,
-  .cpa-lines {
+  .cpa-embed-wrap,
+  .cpa-rel-list,
+  .cpa-perfis-list {
     scrollbar-color: #a6a6a6 transparent;
   }
 }
@@ -560,7 +661,7 @@ body:has(.cpa-root) {
   color: var(--cpa-on-navy);
   border: 1px solid var(--cpa-line);
   border-radius: calc(12 * var(--u));
-  font-size: calc(30 * var(--u));
+  font-size: calc(28 * var(--u));
   cursor: pointer;
   list-style: none;
 }
@@ -576,7 +677,6 @@ body:has(.cpa-root) {
 .cpa-cpa[open] > summary {
   border-radius: calc(12 * var(--u)) calc(12 * var(--u)) 0 0;
 }
-/* seta: para baixo quando fechado, para cima quando aberto */
 .cpa-cpa > summary svg {
   position: absolute;
   right: calc(40 * var(--u));
@@ -588,136 +688,96 @@ body:has(.cpa-root) {
 }
 
 .cpa-cpa-body {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 378fr) minmax(0, 341fr) calc(72 * var(--u));
-  gap: calc(24 * var(--u));
-  height: calc(294 * var(--u));
-  padding: calc(19 * var(--u)) calc(20 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--u));
+  padding: calc(14 * var(--u)) calc(18 * var(--u));
   background: var(--cpa-panel);
   color: var(--cpa-line);
   border: 1px solid var(--cpa-line);
   border-top: 0;
   border-radius: 0 0 calc(12 * var(--u)) calc(12 * var(--u));
 }
-.cpa-res-chart,
-.cpa-res-list {
-  min-width: 0;
-  height: calc(234 * var(--u));
-  background: var(--cpa-panel);
-  border: 1px solid #444444;
-  border-radius: calc(8 * var(--u));
-}
-.cpa-res-chart {
-  overflow: hidden;
-}
-.cpa-res-panel {
-  display: none;
-  width: 100%;
-  height: 100%;
-}
-.cpa-res-panel svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-.cpa-res-list {
-  display: flex;
-  flex-direction: column;
-  gap: calc(10 * var(--u));
-  padding: calc(10 * var(--u)) calc(6 * var(--u)) calc(10 * var(--u)) calc(14 * var(--u));
-  overflow-y: auto;
-}
-.cpa-q {
+.cpa-embed-notice {
   display: flex;
   align-items: center;
-  flex: none;
-  height: calc(44 * var(--u));
-  padding: 0 calc(12 * var(--u));
-  font-size: calc(19 * var(--u));
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  background: var(--cpa-panel);
+  justify-content: space-between;
+  gap: calc(12 * var(--u));
+  padding: calc(8 * var(--u)) calc(14 * var(--u));
+  background: var(--cpa-panel-light);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: calc(8 * var(--u));
+  font-size: calc(13 * var(--u));
+  color: var(--cpa-line);
+}
+.cpa-embed-wrap {
+  width: 100%;
+  height: calc(320 * var(--u));
+  overflow-y: auto;
+  background: #ffffff;
   border: 1px solid #444444;
   border-radius: calc(8 * var(--u));
-  cursor: pointer;
 }
-.cpa-q:hover {
-  filter: brightness(0.94);
-}
-.cpa-res-tools {
-  display: flex;
-  align-items: flex-start;
-  gap: calc(12 * var(--u));
-}
-.cpa-stage .cpa-tool,
-.cpa-stage .cpa-tool:hover {
-  flex: none;
-  width: calc(30 * var(--u));
-  height: calc(30 * var(--u));
-  background: transparent;
-  color: var(--cpa-line);
-  filter: none;
-}
-.cpa-stage .cpa-tool svg {
-  width: calc(26 * var(--u));
-  height: calc(26 * var(--u));
-}
-
-/* Respostas discursivas: uma linha por resposta */
-.cpa-lines {
-  height: 100%;
-  overflow-y: auto;
-  margin: 0;
-  padding: 0 calc(6 * var(--u)) 0 0;
-}
-.cpa-stage .cpa-lines li {
-  padding: calc(9 * var(--u)) calc(14 * var(--u));
-  font-size: calc(13 * var(--u));
-  line-height: 1.3;
-  border-bottom: 1px solid #8f8f8f;
-}
-
-/* Troca de pergunta sem JavaScript: o rádio marcado mostra o painel e destaca o item (perguntas 1 a 8) */
-.cpa-cpa-body:has(input[value="1"]:checked) [data-panel="1"],
-.cpa-cpa-body:has(input[value="2"]:checked) [data-panel="2"],
-.cpa-cpa-body:has(input[value="3"]:checked) [data-panel="3"],
-.cpa-cpa-body:has(input[value="4"]:checked) [data-panel="4"],
-.cpa-cpa-body:has(input[value="5"]:checked) [data-panel="5"],
-.cpa-cpa-body:has(input[value="6"]:checked) [data-panel="6"],
-.cpa-cpa-body:has(input[value="7"]:checked) [data-panel="7"],
-.cpa-cpa-body:has(input[value="8"]:checked) [data-panel="8"] {
+.cpa-embed-wrap iframe {
   display: block;
+  width: 100%;
+  border: 0;
 }
-.cpa-cpa-body:has(input[value="1"]:checked) label[data-q="1"],
-.cpa-cpa-body:has(input[value="2"]:checked) label[data-q="2"],
-.cpa-cpa-body:has(input[value="3"]:checked) label[data-q="3"],
-.cpa-cpa-body:has(input[value="4"]:checked) label[data-q="4"],
-.cpa-cpa-body:has(input[value="5"]:checked) label[data-q="5"],
-.cpa-cpa-body:has(input[value="6"]:checked) label[data-q="6"],
-.cpa-cpa-body:has(input[value="7"]:checked) label[data-q="7"],
-.cpa-cpa-body:has(input[value="8"]:checked) label[data-q="8"] {
-  background: #a0a0a0;
-  border-color: var(--cpa-line);
+.cpa-embed-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--u));
+  padding: calc(20 * var(--u));
+  min-height: 100%;
+  background: #f8fafc;
+  color: var(--cpa-line);
 }
-.cpa-cpa-body:has(input[value="1"]:focus-visible) label[data-q="1"],
-.cpa-cpa-body:has(input[value="2"]:focus-visible) label[data-q="2"],
-.cpa-cpa-body:has(input[value="3"]:focus-visible) label[data-q="3"],
-.cpa-cpa-body:has(input[value="4"]:focus-visible) label[data-q="4"],
-.cpa-cpa-body:has(input[value="5"]:focus-visible) label[data-q="5"],
-.cpa-cpa-body:has(input[value="6"]:focus-visible) label[data-q="6"],
-.cpa-cpa-body:has(input[value="7"]:focus-visible) label[data-q="7"],
-.cpa-cpa-body:has(input[value="8"]:focus-visible) label[data-q="8"] {
-  outline: 3px solid #00a6d6;
-  outline-offset: 2px;
+.cpa-embed-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(10 * var(--u));
+  padding: calc(10 * var(--u)) calc(14 * var(--u));
+  background: var(--cpa-navy);
+  color: var(--cpa-on-navy);
+  border-radius: calc(8 * var(--u));
+  font-size: calc(13 * var(--u));
+}
+.cpa-embed-filters {
+  display: flex;
+  gap: calc(8 * var(--u));
+}
+.cpa-embed-chip {
+  padding: calc(4 * var(--u)) calc(10 * var(--u));
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: calc(6 * var(--u));
+  font-size: calc(12 * var(--u));
+}
+.cpa-embed-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(14 * var(--u));
+}
+.cpa-embed-kpi {
+  padding: calc(14 * var(--u));
+  background: var(--cpa-panel);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: calc(8 * var(--u));
+  text-align: center;
+}
+.cpa-embed-kpi strong {
+  display: block;
+  font-size: calc(24 * var(--u));
+  color: var(--cpa-navy);
+  margin-top: calc(4 * var(--u));
 }
 
 /* ---------- 6. responder devolutiva (administrador) ---------- */
 .cpa-stage .cpa-flabel {
   display: block;
   font-weight: 400;
-  line-height: 22px;
+  line-height: 20px;
   color: var(--cpa-line);
 }
 .cpa-stage .cpa-select {
@@ -744,6 +804,165 @@ body:has(.cpa-root) {
 .cpa-stage .cpa-field::placeholder {
   color: #666666;
 }
+.cpa-form-feedback {
+  position: absolute;
+  text-align: center;
+  font-size: calc(13 * var(--u));
+  color: #0b5e18;
+}
+
+/* ---------- 7. relatórios e boletins (/relatorios) ---------- */
+.cpa-rel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--u));
+  padding: calc(14 * var(--u)) calc(18 * var(--u));
+  color: var(--cpa-line);
+}
+.cpa-rel-upload {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) calc(84 * var(--u)) minmax(0, 1.3fr) calc(148 * var(--u));
+  gap: calc(10 * var(--u));
+  align-items: center;
+  padding: calc(10 * var(--u)) calc(12 * var(--u));
+  background: var(--cpa-panel-light);
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  border-radius: calc(10 * var(--u));
+}
+.cpa-rel-upload .cpa-field {
+  height: calc(34 * var(--u));
+  font-size: calc(13 * var(--u));
+}
+.cpa-rel-file-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(6 * var(--u));
+  height: calc(34 * var(--u));
+  padding: 0 calc(10 * var(--u));
+  background: var(--cpa-panel);
+  border: 1px dashed var(--cpa-line);
+  border-radius: calc(8 * var(--u));
+  font-size: calc(12 * var(--u));
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cpa-rel-tabs {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+}
+.cpa-stage .cpa-tab {
+  height: calc(30 * var(--u));
+  padding: 0 calc(14 * var(--u));
+  border-radius: calc(15 * var(--u));
+  border: 1px solid var(--cpa-line);
+  background: var(--cpa-panel-light);
+  color: var(--cpa-line);
+  font-size: calc(13 * var(--u));
+  cursor: pointer;
+}
+.cpa-stage .cpa-tab--active {
+  background: var(--cpa-navy);
+  color: var(--cpa-on-navy);
+}
+.cpa-rel-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  padding-right: calc(6 * var(--u));
+  overflow-y: auto;
+}
+.cpa-rel-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(14 * var(--u));
+  padding: calc(12 * var(--u)) calc(16 * var(--u));
+  background: var(--cpa-panel-light);
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  border-radius: calc(10 * var(--u));
+}
+.cpa-rel-meta {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--u));
+  min-width: 0;
+}
+.cpa-rel-badges {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+}
+.cpa-rel-badge {
+  padding: calc(2 * var(--u)) calc(10 * var(--u));
+  border-radius: calc(10 * var(--u));
+  background: var(--cpa-navy);
+  color: var(--cpa-on-navy);
+  font-size: calc(11 * var(--u));
+}
+.cpa-rel-year {
+  padding: calc(2 * var(--u)) calc(8 * var(--u));
+  border-radius: calc(10 * var(--u));
+  border: 1px solid var(--cpa-line);
+  font-size: calc(11 * var(--u));
+}
+.cpa-rel-title {
+  font-size: calc(16 * var(--u));
+  color: var(--cpa-line);
+}
+
+/* ---------- 8. gerenciar perfis (/perfis) ---------- */
+.cpa-perfis-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--u));
+  padding: calc(14 * var(--u)) calc(18 * var(--u));
+  color: var(--cpa-line);
+}
+.cpa-perfis-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(8 * var(--u)) calc(14 * var(--u));
+  background: var(--cpa-panel-light);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: calc(8 * var(--u));
+  font-size: calc(13 * var(--u));
+}
+.cpa-perfis-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  padding-right: calc(6 * var(--u));
+  overflow-y: auto;
+}
+.cpa-perfil-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.5fr) calc(220 * var(--u)) calc(112 * var(--u));
+  align-items: center;
+  gap: calc(12 * var(--u));
+  padding: calc(10 * var(--u)) calc(14 * var(--u));
+  background: var(--cpa-panel-light);
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  border-radius: calc(10 * var(--u));
+  font-size: calc(14 * var(--u));
+}
+.cpa-perfil-row .cpa-select {
+  height: calc(34 * var(--u));
+  font-size: calc(13 * var(--u));
+}
 
 /* ---------- /pesquisa (página provisória) ---------- */
 .cpa-note {
@@ -757,5 +976,225 @@ body:has(.cpa-root) {
   .cpa-modal * {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* ---------- 9. responsividade mobile (<= 768px) ---------- */
+@media (max-width: 768px) {
+  :root {
+    --u: 1px;
+  }
+
+  html:has(.cpa-root),
+  body:has(.cpa-root) {
+    overflow: auto;
+  }
+
+  .cpa-root {
+    position: relative;
+    inset: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .cpa-stage {
+    position: static;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 14px;
+    overflow: visible;
+    font-size: 16px;
+  }
+
+  .cpa-center,
+  .cpa-bar,
+  .cpa-home-header,
+  .cpa-panel,
+  .cpa-results,
+  .cpa-banner,
+  .cpa-years {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    translate: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .cpa-bar {
+    min-height: 56px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+  .cpa-bar h1 {
+    font-size: 20px !important;
+  }
+  .cpa-bar .cpa-btn--ghost {
+    position: static !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .cpa-home-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cpa-home-header h1 {
+    order: 3;
+    flex: 1 1 100% !important;
+    min-height: 48px;
+    padding: 10px 14px;
+    font-size: 16px !important;
+  }
+  .cpa-profile {
+    margin-left: auto;
+    width: auto !important;
+    height: 48px !important;
+    padding-right: 12px;
+    border-radius: 24px;
+    font-size: 14px !important;
+  }
+
+  .cpa-banner {
+    padding: 18px 20px;
+    border-radius: 18px;
+  }
+  .cpa-banner h2 {
+    font-size: 22px !important;
+    white-space: normal !important;
+  }
+
+  /* Grade de botões do painel principal no mobile */
+  .cpa-stage > div.cpa-center {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .cpa-stage > div.cpa-center > .cpa-banner {
+    grid-column: 1 / -1;
+  }
+  .cpa-stage > div.cpa-center > .cpa-btn {
+    position: static !important;
+    width: 100% !important;
+    height: 64px !important;
+    font-size: 16px !important;
+  }
+
+  /* Cartões de formulário (Login e Responder Devolutiva) */
+  .cpa-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px;
+  }
+  .cpa-card > * {
+    position: static !important;
+    width: 100% !important;
+  }
+  .cpa-stage .cpa-label {
+    text-align: left;
+    font-size: 15px !important;
+  }
+  .cpa-stage .cpa-field,
+  .cpa-stage .cpa-select {
+    height: 40px !important;
+    font-size: 15px !important;
+  }
+  .cpa-stage .cpa-textarea {
+    min-height: 110px !important;
+    font-size: 15px !important;
+  }
+  .cpa-card .cpa-btn {
+    height: 44px !important;
+    margin-top: 6px;
+    font-size: 16px !important;
+  }
+
+  /* Painéis e listas no mobile */
+  .cpa-panel {
+    padding: 14px;
+  }
+  .cpa-years {
+    padding-bottom: 10px;
+  }
+  .cpa-year {
+    width: 260px;
+    height: 250px;
+  }
+
+  .cpa-rel-upload,
+  .cpa-perfil-row {
+    grid-template-columns: 1fr;
+  }
+  .cpa-rel-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cpa-cpa > summary {
+    height: 58px;
+    font-size: 20px;
+    padding: 0 44px 0 16px;
+  }
+  .cpa-embed-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cpa-modal.cpa-modal {
+    width: calc(100vw - 24px) !important;
+    height: min(82vh, 520px) !important;
+  }
+}
+
+/* Barras de cadastro rápido em /perfis e /cpas (mesmo padrão visual de .cpa-rel-upload) */
+.cpa-perfis-upload,
+.cpa-cpas-upload {
+  display: grid;
+  align-items: center;
+  gap: calc(var(--u) * 8);
+  padding: calc(var(--u) * 10) calc(var(--u) * 12);
+  background: #efefef;
+  border: 1px solid #c7c7c7;
+  border-radius: calc(var(--u) * 20);
+}
+
+.cpa-perfis-upload {
+  grid-template-columns: 1.2fr 1.2fr 1fr 1.1fr auto;
+}
+
+.cpa-cpas-upload {
+  grid-template-columns: 1.3fr 1.4fr 1.1fr 0.6fr 0.7fr 0.8fr auto;
+}
+
+.cpa-perfil-row--crud {
+  grid-template-columns: 1.2fr 1.1fr 1.1fr auto auto !important;
+}
+
+.cpa-cpa-row {
+  display: grid;
+  grid-template-columns: 1.6fr auto auto auto auto auto;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+  padding: calc(var(--u) * 8) calc(var(--u) * 12);
+  background: #efefef;
+  border-radius: calc(var(--u) * 12);
+}
+
+@media (max-width: 768px) {
+  .cpa-perfis-upload,
+  .cpa-cpas-upload,
+  .cpa-perfil-row--crud,
+  .cpa-cpa-row {
+    grid-template-columns: 1fr !important;
+    border-radius: 14px;
   }
 }

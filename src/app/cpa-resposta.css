@@ -6,10 +6,26 @@
 
 /* Segundo modal (resposta): menor que o do Mural. Especificidade maior que .cpa-modal.cpa-modal */
 .cpa-modal.cpa-modal.cpa-modal--resposta {
+  top: 0 !important;
+  left: 0 !important;
   width: calc(560 * var(--u)) !important;
   height: calc(330 * var(--u)) !important;
 }
 
+.cpa-modal.cpa-modal.cpa-modal--resposta.cpa-modal--admin {
+  height: calc(380 * var(--u)) !important;
+}
+
+.cpa-modal.cpa-modal.cpa-modal--resposta.cpa-modal--edicao {
+  height: calc(442 * var(--u)) !important;
+}
+
+.cpa-modal.cpa-modal.cpa-modal--resposta [data-slot="dialog-close"] {
+  top: calc(24 * var(--u)) !important;
+  left: calc(4 * var(--u)) !important;
+  width: calc(22 * var(--u)) !important;
+  height: calc(22 * var(--u)) !important;
+}
 /* Grupo à direita do item do Mural: [Ver resposta] [etiqueta] */
 .cpa-modal .cpa-m-actions {
   position: absolute;

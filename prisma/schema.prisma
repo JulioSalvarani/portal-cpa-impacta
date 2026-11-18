@@ -589,12 +589,13 @@ model areas {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model cpas {
-  id        BigInt   @id @default(autoincrement())
-  form_link String   @unique @db.VarChar
-  ano       Decimal? @db.Decimal
-  semestre  Int?     @db.SmallInt
-  title     String?
-  is_active Boolean  @unique(map: "idx_single_active_survey", where: raw("(is_active = true)")) @default(false)
+  id                BigInt   @id @default(autoincrement())
+  form_link         String   @unique @db.VarChar
+  ano               Decimal? @db.Decimal
+  semestre          Int?     @db.SmallInt
+  title             String?
+  is_active         Boolean  @default(false)
+  perfis_permitidos String[] @default(["aluno", "coordenador", "avaliador_externo", "admin"])
 
   @@schema("public")
 }
@@ -613,14 +614,15 @@ model profiles {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model respostas {
-  area             String
-  status           BigInt
-  ano              Decimal          @db.Decimal
-  resposta         String?          @default("")
-  id               BigInt           @id
-  title            String?
-  areas            areas            @relation(fields: [area], references: [nome_area], onDelete: NoAction)
-  status_respostas status_respostas @relation(fields: [status], references: [id], onDelete: SetNull)
+  area              String
+  status            BigInt
+  ano               Decimal          @db.Decimal
+  resposta          String?          @default("")
+  id                BigInt           @id @default(autoincrement())
+  title             String?
+  perfis_permitidos String[]         @default(["aluno", "coordenador", "avaliador_externo", "admin"])
+  areas             areas            @relation(fields: [area], references: [nome_area], onDelete: NoAction)
+  status_respostas  status_respostas @relation(fields: [status], references: [id], onDelete: SetNull)
 
   @@schema("public")
 }
@@ -640,6 +642,33 @@ model status_respostas {
   status    String?
   hex       String?
   respostas respostas[]
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model dashboards_cpa {
+  id                BigInt   @id @default(autoincrement())
+  titulo            String
+  embed_url         String
+  embed_url_externo String?
+  perfis_permitidos String[] @default(["admin"])
+  ordem             Int      @default(1) @db.SmallInt
+  ativo             Boolean  @default(true)
+  created_at        DateTime @default(now()) @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model relatorios {
+  id          BigInt   @id @default(autoincrement())
+  titulo      String
+  tipo        String
+  ano         Decimal  @db.Decimal
+  arquivo_url String
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
 
   @@schema("public")
 }

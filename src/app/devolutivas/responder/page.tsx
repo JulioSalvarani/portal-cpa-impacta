@@ -5,17 +5,28 @@ import "@/app/cpa.css";
 import { BarraInstitucional } from "@/components/barra-institucional";
 import { FormResposta } from "@/components/devolutivas/form-resposta";
 import { Button } from "@/components/ui/button";
-import { band, box, size, u } from "@/lib/cpa-box";
 import { exigirAdmin } from "@/lib/auth";
+import { band, box, size, u } from "@/lib/cpa-box";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = { title: "Responder Devolutiva · Portal CPA" };
 
-/**
- * Tela restrita à coordenação (o perfil aluno não acessa) (visual).
- * TODO (implementação): restringir por perfil (tabela `roles`) e definir como a devolutiva é criada (título, área, categoria, motivo).
- */
 export default async function PaginaResponderDevolutiva() {
   await exigirAdmin();
+
+  const [areasDb, statusDb] = await Promise.all([
+    prisma.areas.findMany({ orderBy: { nome_area: "asc" } }),
+    prisma.status_respostas.findMany({ orderBy: { id: "asc" } }),
+  ]);
+
+  const areas = areasDb.map((a) => a.nome_area);
+  const categorias = statusDb
+    .filter((s) => Boolean(s.status?.trim()))
+    .map((s) => ({
+      id: s.id.toString(),
+      rotulo: s.status!.trim(),
+    }));
+
   return (
     <div className="cpa-root">
       <div className="cpa-stage">
@@ -35,10 +46,10 @@ export default async function PaginaResponderDevolutiva() {
         <main style={{ display: "contents" }}>
           <section
             className="cpa-card cpa-center"
-            style={{ ...size(640, 400), top: `calc(50% + ${u(32)})` }}
+            style={{ ...size(640, 396), top: `calc(50% + ${u(20)})` }}
             aria-label="Resposta da devolutiva"
           >
-            <FormResposta />
+            <FormResposta areas={areas} categorias={categorias} />
           </section>
         </main>
       </div>
