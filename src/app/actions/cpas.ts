@@ -11,6 +11,7 @@ export type EstadoAcaoCpa = {
 
 const PERFIS_VALIDOS = new Set<PerfilCpa>([
   "aluno",
+  "professor",
   "coordenador",
   "avaliador_externo",
   "admin",

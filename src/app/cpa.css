@@ -247,8 +247,9 @@ body:has(.cpa-root) {
   background: var(--cpa-navy);
   color: var(--cpa-on-navy);
   border-radius: calc(30 * var(--u)) 0 0 calc(30 * var(--u));
-  cursor: pointer;
   text-align: left;
+  cursor: default;
+  user-select: none;
 }
 .cpa-profile:hover {
   filter: brightness(1.18);
@@ -323,8 +324,8 @@ body:has(.cpa-root) {
   justify-content: flex-start;
   align-items: stretch;
   flex: none;
-  width: calc(285 * var(--u));
-  height: calc(262 * var(--u));
+  width: calc(270 * var(--u));
+  height: calc(300 * var(--u));
   padding: 0;
   overflow: hidden;
   text-align: left;
@@ -403,17 +404,23 @@ body:has(.cpa-root) {
 /* ---------- 4. modal "mural de devolutivas" e modal de contato ---------- */
 .cpa-modal.cpa-modal {
   position: fixed !important;
-  inset: 0 !important;
-  margin: auto !important;
-  transform: none !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
   translate: none !important;
   scale: none !important;
+  transform: translate(-50%, -50%) !important;
   animation: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
   display: block !important;
   width: calc(662 * var(--u)) !important;
   height: calc(370 * var(--u)) !important;
-  max-width: none !important;
-  max-height: none !important;
+  max-width: calc(100vw - 24px) !important;
+  max-height: calc(100vh - 24px) !important;
   padding: 0 !important;
   gap: 0 !important;
   overflow: hidden;
@@ -509,10 +516,11 @@ body:has(.cpa-root) {
 .cpa-modal .cpa-m-text {
   flex: 1;
   min-width: 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+  box-sizing: border-box;
+  display: block;
+  height: calc(48 * var(--u));
+  overflow-y: auto;
+  overflow-x: hidden;
   background: var(--cpa-panel);
   color: var(--cpa-line);
   border: 1px solid rgba(0, 0, 0, 0.33);
@@ -522,6 +530,15 @@ body:has(.cpa-root) {
   line-height: 1.25;
   white-space: normal;
   word-break: break-word;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(1, 42, 85, 0.45) transparent;
+}
+.cpa-modal .cpa-m-text::-webkit-scrollbar {
+  width: calc(4 * var(--u));
+}
+.cpa-modal .cpa-m-text::-webkit-scrollbar-thumb {
+  background: rgba(1, 42, 85, 0.45);
+  border-radius: calc(4 * var(--u));
 }
 .cpa-modal .cpa-m-text--full {
   display: block;
@@ -530,6 +547,7 @@ body:has(.cpa-root) {
 }
 .cpa-modal .cpa-m-text--short {
   display: block;
+  overflow-y: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: calc(15 * var(--u));
@@ -1196,5 +1214,144 @@ body:has(.cpa-root) {
   .cpa-cpa-row {
     grid-template-columns: 1fr !important;
     border-radius: 14px;
+  }
+}
+
+/* =========================================================
+   AJUSTES FINAIS: FUNDO DO LOGIN + INPUTS E BOTÕES CRUD
+   ========================================================= */
+
+/* 1. Imagem de fundo exclusiva da página /login */
+.cpa-root.cpa-root--login {
+  background-image: url("/wallpaper.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.cpa-root.cpa-root--login::before,
+.cpa-root.cpa-root--login::after,
+.cpa-root.cpa-root--login .cpa-bg {
+  display: none;
+}
+
+/* 2. Barras de cadastro rápido em /perfis, /cpas e /relatorios */
+.cpa-perfis-upload,
+.cpa-cpas-upload {
+  display: grid;
+  align-items: center;
+  gap: calc(var(--u) * 8);
+  padding: calc(var(--u) * 10) calc(var(--u) * 12);
+  background: #efefef;
+  border: 1px solid #c7c7c7;
+  border-radius: calc(var(--u) * 20);
+}
+
+.cpa-perfis-upload {
+  grid-template-columns: 1.25fr 1.25fr 1fr 1.05fr auto;
+}
+
+.cpa-cpas-upload {
+  grid-template-columns: 1.35fr 1.45fr 1.05fr calc(76 * var(--u)) 0.95fr auto;
+}
+
+.cpa-perfil-row--crud {
+  grid-template-columns: 1.2fr 1.1fr 1.1fr auto auto !important;
+}
+
+.cpa-cpa-row {
+  display: grid;
+  grid-template-columns: 1.6fr auto auto auto auto auto;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+  padding: calc(var(--u) * 8) calc(var(--u) * 12);
+  background: #efefef;
+  border-radius: calc(var(--u) * 12);
+}
+
+/* 3. Altura uniforme para todos os inputs e selects dentro das barras e listas */
+.cpa-perfis-upload .cpa-field,
+.cpa-cpas-upload .cpa-field,
+.cpa-rel-upload .cpa-field,
+.cpa-perfil-row .cpa-field {
+  height: calc(34 * var(--u));
+  min-height: calc(34 * var(--u));
+  padding: 0 calc(12 * var(--u));
+  font-size: calc(13 * var(--u));
+  line-height: calc(34 * var(--u));
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.cpa-perfis-upload .cpa-select,
+.cpa-cpas-upload .cpa-select,
+.cpa-rel-upload .cpa-select,
+.cpa-perfil-row .cpa-select {
+  padding-right: calc(26 * var(--u));
+}
+
+/* 4. Respiro lateral e quebra bloqueada nos botões (Criar CPA, Criar Usuário, Relatórios, Encerrar, Ativar, Salvar) */
+.cpa-stage .cpa-perfis-upload .cpa-btn,
+.cpa-stage .cpa-perfis-upload .cpa-btn:hover,
+.cpa-stage .cpa-perfis-upload .cpa-btn:active,
+.cpa-stage .cpa-perfis-upload .cpa-btn:focus-visible,
+.cpa-stage .cpa-cpas-upload .cpa-btn,
+.cpa-stage .cpa-cpas-upload .cpa-btn:hover,
+.cpa-stage .cpa-cpas-upload .cpa-btn:active,
+.cpa-stage .cpa-cpas-upload .cpa-btn:focus-visible,
+.cpa-stage .cpa-rel-upload .cpa-btn,
+.cpa-stage .cpa-rel-upload .cpa-btn:hover,
+.cpa-stage .cpa-rel-upload .cpa-btn:active,
+.cpa-stage .cpa-rel-upload .cpa-btn:focus-visible,
+.cpa-stage .cpa-rel-card .cpa-btn,
+.cpa-stage .cpa-rel-card .cpa-btn:hover,
+.cpa-stage .cpa-rel-card .cpa-btn:active,
+.cpa-stage .cpa-rel-card .cpa-btn:focus-visible,
+.cpa-stage .cpa-cpa-row .cpa-btn,
+.cpa-stage .cpa-cpa-row .cpa-btn:hover,
+.cpa-stage .cpa-cpa-row .cpa-btn:active,
+.cpa-stage .cpa-cpa-row .cpa-btn:focus-visible,
+.cpa-stage .cpa-perfil-row .cpa-btn,
+.cpa-stage .cpa-perfil-row .cpa-btn:hover,
+.cpa-stage .cpa-perfil-row .cpa-btn:active,
+.cpa-stage .cpa-perfil-row .cpa-btn:focus-visible {
+  padding: 0 calc(16 * var(--u));
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cpa-stage .cpa-cpa-row .cpa-btn--ghost,
+.cpa-stage .cpa-cpa-row .cpa-btn--ghost:hover,
+.cpa-stage .cpa-cpa-row .cpa-btn--ghost:active,
+.cpa-stage .cpa-cpa-row .cpa-btn--ghost:focus-visible,
+.cpa-stage .cpa-perfil-row .cpa-btn--ghost,
+.cpa-stage .cpa-perfil-row .cpa-btn--ghost:hover,
+.cpa-stage .cpa-perfil-row .cpa-btn--ghost:active,
+.cpa-stage .cpa-perfil-row .cpa-btn--ghost:focus-visible,
+.cpa-stage .cpa-rel-card .cpa-btn--ghost,
+.cpa-stage .cpa-rel-card .cpa-btn--ghost:hover,
+.cpa-stage .cpa-rel-card .cpa-btn--ghost:active,
+.cpa-stage .cpa-rel-card .cpa-btn--ghost:focus-visible {
+  padding: 0 calc(10 * var(--u));
+}
+
+@media (max-width: 768px) {
+  .cpa-perfis-upload,
+  .cpa-cpas-upload,
+  .cpa-perfil-row--crud,
+  .cpa-cpa-row {
+    grid-template-columns: 1fr !important;
+    border-radius: 14px;
+  }
+
+  .cpa-perfis-upload .cpa-field,
+  .cpa-cpas-upload .cpa-field,
+  .cpa-rel-upload .cpa-field,
+  .cpa-perfil-row .cpa-field {
+    height: 40px;
+    min-height: 40px;
+    font-size: 14px;
+    line-height: 40px;
   }
 }

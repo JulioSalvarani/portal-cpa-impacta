@@ -46,7 +46,7 @@ export default async function PaginaResponderDevolutiva() {
         <main style={{ display: "contents" }}>
           <section
             className="cpa-card cpa-center"
-            style={{ ...size(640, 396), top: `calc(50% + ${u(20)})` }}
+            style={{ ...size(640, 432), top: `calc(50% + ${u(38)})` }}
             aria-label="Resposta da devolutiva"
           >
             <FormResposta areas={areas} categorias={categorias} />

@@ -9,11 +9,12 @@ export type EstadoFormDevolutiva = {
   mensagem: string;
 } | null;
 
-export type DestinoDevolutiva = "corpo_funcional" | "alunos";
+export type DestinoDevolutiva = "corpo_funcional" | "alunos" | "professores";
 
 const PERFIS_POR_DESTINO: Record<DestinoDevolutiva, PerfilCpa[]> = {
   corpo_funcional: ["coordenador", "avaliador_externo", "admin"],
   alunos: ["aluno", "coordenador", "avaliador_externo", "admin"],
+  professores: ["professor", "coordenador", "avaliador_externo", "admin"],
 };
 
 function extrairDadosDevolutiva(formData: FormData) {
@@ -24,7 +25,9 @@ function extrairDadosDevolutiva(formData: FormData) {
   const destinoRaw = String(formData.get("destino") ?? "").trim();
 
   const perfisPermitidos =
-    destinoRaw === "corpo_funcional" || destinoRaw === "alunos"
+    destinoRaw === "corpo_funcional" ||
+    destinoRaw === "alunos" ||
+    destinoRaw === "professores"
       ? PERFIS_POR_DESTINO[destinoRaw]
       : [];
 

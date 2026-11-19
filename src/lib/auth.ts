@@ -2,7 +2,12 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
-export type PerfilCpa = "aluno" | "coordenador" | "avaliador_externo" | "admin";
+export type PerfilCpa =
+  | "aluno"
+  | "professor"
+  | "coordenador"
+  | "avaliador_externo"
+  | "admin";
 
 export type UsuarioLogado = {
   userId: string;
@@ -13,6 +18,7 @@ export type UsuarioLogado = {
 
 const PERFIS_VALIDOS: ReadonlySet<string> = new Set([
   "aluno",
+  "professor",
   "coordenador",
   "avaliador_externo",
   "admin",

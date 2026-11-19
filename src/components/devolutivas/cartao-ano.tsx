@@ -1,16 +1,36 @@
 import { GraficoStatus } from "@/components/devolutivas/grafico-status";
 import type { AnoDevolutivas } from "@/lib/devolutivas-data";
+import { box, u } from "@/lib/cpa-box";
 
-/**
- * Conteúdo do card de um ano: faixa com o ano, indicador "Número de Sugestões por Tipo
- * de Deferimento" e gráfico de barras. O contêiner (botão que abre o mural) fica no painel.
- */
-export function CartaoAno({ item }: { item: AnoDevolutivas }) {
+type Props = {
+  item: AnoDevolutivas;
+};
+
+export function CartaoAno({ item }: Props) {
   return (
     <>
-      <div className="cpa-year-head">{item.ano}</div>
-      <p className="cpa-year-title">Número de Sugestões por Tipo de Deferimento</p>
-      <GraficoStatus contagem={item.contagem} ano={item.ano} />
+      {/* Cabeçalho azul-marinho do ano */}
+      <div className="cpa-year-head" style={box(0, 0, 270, 56)}>
+        <span style={{ fontSize: u(30) }}>{item.ano}</span>
+      </div>
+
+      {/* Subtítulo com 16u de respiro abaixo da linha do cabeçalho */}
+      <p
+        className="cpa-year-sub"
+        style={box(10, 72, 250, 18, {
+          fontSize: u(10.5),
+          lineHeight: u(14),
+          textAlign: "center",
+          margin: 0,
+        })}
+      >
+        Número de Sugestões por Tipo de Deferimento
+      </p>
+
+      {/* Gráfico posicionado mais abaixo (102u) e deixando 22u de margem inferior */}
+      <div style={box(14, 102, 242, 176)}>
+        <GraficoStatus ano={item.ano} contagem={item.contagem} />
+      </div>
     </>
   );
 }

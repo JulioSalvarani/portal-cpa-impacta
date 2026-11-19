@@ -4,12 +4,14 @@ import Link from "next/link";
 import { LogOut, UserRound } from "lucide-react";
 import { ContatoInfoDialog } from "@/components/contato-info-dialog";
 import { Button } from "@/components/ui/button";
+import type { PerfilCpa } from "@/lib/auth";
 import { band, size, u } from "@/lib/cpa-box";
 
-export type PerfilCpa = "aluno" | "coordenador" | "avaliador_externo" | "admin";
+export type { PerfilCpa };
 
 const ROTULO_PERFIL: Record<PerfilCpa, string> = {
   aluno: "Aluno",
+  professor: "Professor",
   coordenador: "Coordenador",
   avaliador_externo: "Avaliador Ext.",
   admin: "Administrador",
@@ -19,7 +21,6 @@ type Props = {
   nome?: string;
   role?: PerfilCpa;
   logoutAction?: () => Promise<void> | void;
-  onAlternarPerfilPreview?: () => void;
 };
 
 /**
@@ -27,13 +28,12 @@ type Props = {
  * - Botão de logout com ícone `LogOut` (`.cpa-logout`)
  * - Botão "i" (abre o modal ContatoInfoDialog)
  * - Pílula de saudação dinâmica
- * - Indicador de perfil ativo (no protótipo, clicar alterna o perfil de preview)
+ * - Indicador estático do perfil ativo
  */
 export function HomeHeader({
   nome = "Usuário",
   role = "admin",
   logoutAction,
-  onAlternarPerfilPreview,
 }: Props) {
   const botaoEstilo = size(58, 52, { borderRadius: u(26), marginRight: u(37) });
 
@@ -87,10 +87,7 @@ export function HomeHeader({
         Seja bem vindo, {nome}!
       </h1>
 
-      <button
-        type="button"
-        onClick={onAlternarPerfilPreview}
-        title="Perfil ativo (clique no protótipo para alternar entre os 4 perfis)"
+      <div
         className="cpa-profile"
         style={size(185, 60, { fontSize: u(15) })}
       >
@@ -99,7 +96,7 @@ export function HomeHeader({
         <span className="cpa-avatar">
           <UserRound aria-hidden style={{ width: u(26), height: u(26) }} />
         </span>
-      </button>
+      </div>
     </header>
   );
 }

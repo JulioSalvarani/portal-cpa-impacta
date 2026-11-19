@@ -18,8 +18,9 @@ type Props = {
 };
 
 const DESTINOS_OPCOES: { valor: DestinoDevolutiva; rotulo: string }[] = [
-  { valor: "alunos", rotulo: "Devolutiva para Alunos" },
-  { valor: "corpo_funcional", rotulo: "Devolutiva para Corpo funcional" },
+  { valor: "alunos", rotulo: "Alunos" },
+  { valor: "professores", rotulo: "Professores" },
+  { valor: "corpo_funcional", rotulo: "Corpo funcional" },
 ];
 
 export function FormResposta({ areas, categorias }: Props) {
@@ -40,7 +41,7 @@ export function FormResposta({ areas, categorias }: Props) {
       <Label
         htmlFor="titulo"
         className="cpa-flabel"
-        style={box(24, 12, 592, 20, { fontSize: u(15) })}
+        style={box(24, 16, 592, 20, { fontSize: u(15) })}
       >
         Título da resposta
       </Label>
@@ -52,13 +53,13 @@ export function FormResposta({ areas, categorias }: Props) {
         placeholder="Escreva o título da devolutiva"
         autoComplete="off"
         className="cpa-field"
-        style={box(24, 34, 592, 32, { fontSize: u(15) })}
+        style={box(24, 38, 592, 34, { fontSize: u(15) })}
       />
 
       <Label
         htmlFor="area"
         className="cpa-flabel"
-        style={box(24, 74, 290, 20, { fontSize: u(15) })}
+        style={box(24, 88, 286, 20, { fontSize: u(15) })}
       >
         Área responsável
       </Label>
@@ -68,7 +69,7 @@ export function FormResposta({ areas, categorias }: Props) {
         defaultValue=""
         required
         className="cpa-field cpa-select"
-        style={box(24, 96, 290, 32, { fontSize: u(15) })}
+        style={box(24, 110, 286, 34, { fontSize: u(15) })}
       >
         <option value="" disabled>
           Selecione a área
@@ -83,7 +84,7 @@ export function FormResposta({ areas, categorias }: Props) {
       <Label
         htmlFor="statusId"
         className="cpa-flabel"
-        style={box(326, 74, 290, 20, { fontSize: u(15) })}
+        style={box(330, 88, 286, 20, { fontSize: u(15) })}
       >
         Categoria da resposta
       </Label>
@@ -93,7 +94,7 @@ export function FormResposta({ areas, categorias }: Props) {
         defaultValue={categorias[0]?.id ?? ""}
         required
         className="cpa-field cpa-select"
-        style={box(326, 96, 290, 32, { fontSize: u(15) })}
+        style={box(330, 110, 286, 34, { fontSize: u(15) })}
       >
         {categorias.map((c) => (
           <option key={c.id} value={c.id}>
@@ -104,18 +105,18 @@ export function FormResposta({ areas, categorias }: Props) {
 
       <span
         className="cpa-flabel"
-        style={box(24, 136, 592, 20, { fontSize: u(15) })}
+        style={box(24, 160, 592, 20, { fontSize: u(15) })}
       >
         Destinatário (Coordenação, Avaliador Externo e Admin visualizam todas)
       </span>
       <div
         role="radiogroup"
         aria-label="Destinatário da devolutiva"
-        style={box(24, 158, 592, 28, {
+        style={box(24, 184, 592, 28, {
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-start",
-          gap: u(36),
+          gap: u(48),
           fontSize: u(14),
         })}
       >
@@ -125,7 +126,7 @@ export function FormResposta({ areas, categorias }: Props) {
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: u(6),
+              gap: u(8),
               cursor: "pointer",
             }}
           >
@@ -144,7 +145,7 @@ export function FormResposta({ areas, categorias }: Props) {
       <Label
         htmlFor="motivo"
         className="cpa-flabel"
-        style={box(24, 194, 592, 20, { fontSize: u(15) })}
+        style={box(24, 228, 592, 20, { fontSize: u(15) })}
       >
         Motivo da resposta
       </Label>
@@ -154,14 +155,14 @@ export function FormResposta({ areas, categorias }: Props) {
         required
         placeholder="Descreva a justificativa oficial da instituição"
         className="cpa-textarea"
-        style={box(24, 216, 592, 92, { fontSize: u(15) })}
+        style={box(24, 250, 592, 96, { fontSize: u(15) })}
       />
 
       {estado && (
         <p
           role="status"
           className="cpa-form-feedback"
-          style={box(24, 314, 592, 18, {
+          style={box(24, 352, 592, 18, {
             color: estado.ok ? "#0a6b0a" : "#c00000",
           })}
         >
@@ -173,7 +174,7 @@ export function FormResposta({ areas, categorias }: Props) {
         type="submit"
         disabled={isPending}
         className="cpa-btn cpa-btn--line"
-        style={box(220, 338, 200, 42, { borderRadius: u(21), fontSize: u(16) })}
+        style={box(220, 374, 200, 42, { borderRadius: u(21), fontSize: u(16) })}
       >
         {isPending ? "Enviando..." : "Enviar resposta"}
       </Button>

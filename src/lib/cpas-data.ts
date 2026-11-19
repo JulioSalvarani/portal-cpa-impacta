@@ -11,6 +11,7 @@ export type CpaItem = {
 
 export const ROTULOS_PERFIL_CPA: Record<PerfilCpa, string> = {
   aluno: "Aluno",
+  professor: "Professor",
   coordenador: "Coordenador",
   avaliador_externo: "Avaliador Externo (MEC)",
   admin: "Administrador (CPA)",

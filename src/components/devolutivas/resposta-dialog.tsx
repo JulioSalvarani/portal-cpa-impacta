@@ -34,8 +34,9 @@ type Props = {
 };
 
 const DESTINOS_OPCOES: { valor: DestinoDevolutiva; rotulo: string }[] = [
-  { valor: "alunos", rotulo: "Devolutiva para Alunos" },
-  { valor: "corpo_funcional", rotulo: "Devolutiva para Corpo funcional" },
+  { valor: "alunos", rotulo: "Alunos" },
+  { valor: "professores", rotulo: "Professores" },
+  { valor: "corpo_funcional", rotulo: "Corpo funcional" },
 ];
 
 export function RespostaDialog({
@@ -92,9 +93,12 @@ export function RespostaDialog({
       "admin",
     ],
   );
-  const destinoAtual: DestinoDevolutiva = perfisAtuais.has("aluno")
-    ? "alunos"
-    : "corpo_funcional";
+  const destinoAtual: DestinoDevolutiva =
+    perfisAtuais.has("professor") && !perfisAtuais.has("aluno")
+      ? "professores"
+      : perfisAtuais.has("aluno")
+        ? "alunos"
+        : "corpo_funcional";
 
   return (
     <Dialog open={aberto} onOpenChange={handleOpenChange}>

@@ -9,6 +9,7 @@ export type UsuarioPerfilItem = {
 
 export const OPCOES_PERFIL: { valor: PerfilCpa; rotulo: string }[] = [
   { valor: "aluno", rotulo: "Aluno" },
+  { valor: "professor", rotulo: "Professor" },
   { valor: "coordenador", rotulo: "Coordenador" },
   { valor: "avaliador_externo", rotulo: "Avaliador Externo (MEC)" },
   { valor: "admin", rotulo: "Administrador (CPA)" },

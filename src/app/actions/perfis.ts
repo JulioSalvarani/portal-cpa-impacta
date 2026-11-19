@@ -12,6 +12,7 @@ export type EstadoCriarUsuario = {
 
 const PERFIS_PERMITIDOS = new Set<PerfilCpa>([
   "aluno",
+  "professor",
   "coordenador",
   "avaliador_externo",
   "admin",

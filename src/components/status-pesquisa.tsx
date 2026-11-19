@@ -32,13 +32,31 @@ export function StatusPesquisa({
         role="status"
         aria-label="Pesquisa ativa"
         className="cpa-banner"
-        style={box(0, 0, 782, 93)}
+        style={box(0, 0, 782, 93, {
+          justifyContent: "center",
+          padding: `0 ${u(76)}`,
+        })}
       >
-        <h2 style={{ fontSize: u(42), whiteSpace: "nowrap" }}>{titulo}</h2>
+        <h2
+          style={{
+            fontSize: titulo.length > 28 ? u(24) : u(42),
+            textAlign: "center",
+            lineHeight: 1.15,
+            margin: 0,
+          }}
+        >
+          {titulo}
+        </h2>
         <span
           className={isActive ? "cpa-dot" : "cpa-dot cpa-dot--closed"}
           role="img"
           aria-label={isActive ? "Pesquisa em andamento" : "Pesquisa encerrada"}
+          style={{
+            position: "absolute",
+            right: u(36),
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
         />
       </section>
 

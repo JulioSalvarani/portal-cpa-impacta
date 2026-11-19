@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/app/cpa.css";
 import { LoginForm } from "@/components/login-form";
 import { box, size, u } from "@/lib/cpa-box";
+
 export const metadata: Metadata = { title: "Login · Portal CPA" };
 
 export default function PaginaLogin() {
