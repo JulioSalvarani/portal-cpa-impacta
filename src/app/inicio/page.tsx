@@ -13,13 +13,16 @@ export const metadata: Metadata = { title: "Início · Portal CPA" };
 export default async function PaginaInicial() {
   const usuario = await exigirUsuarioLogado();
 
-  const cpa = await prisma.cpas.findFirst({
-    where: {
-      perfis_permitidos: { has: usuario.role },
-    },
-    orderBy: [{ is_active: "desc" }, { ano: "desc" }, { id: "desc" }],
-  });
-  
+  // Avaliador externo não responde pesquisa: o banner mostra apenas boas-vindas, sem consulta à CPA.
+  const cpa =
+    usuario.role === "avaliador_externo"
+      ? null
+      : await prisma.cpas.findFirst({
+          where: {
+            perfis_permitidos: { has: usuario.role },
+          },
+          orderBy: [{ is_active: "desc" }, { ano: "desc" }, { id: "desc" }],
+        });
 
   return (
     <div className="cpa-root cpa-root--home">
@@ -40,6 +43,7 @@ export default async function PaginaInicial() {
               isActive={Boolean(cpa?.is_active)}
               formLink={cpa?.form_link ?? "#"}
               role={usuario.role}
+              corHex={usuario.corHex}
             />
           </div>
         </main>

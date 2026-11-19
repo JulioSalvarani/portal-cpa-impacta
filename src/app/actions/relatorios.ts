@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { exigirAdmin } from "@/lib/auth";
+import { exigirGestorRelatorios } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import type { TipoRelatorio } from "@/lib/relatorios-data";
 import { createClient } from "@/lib/supabase/server";
@@ -40,7 +40,7 @@ export async function publicarRelatorioAction(
   _prevState: EstadoUploadRelatorio,
   formData: FormData,
 ): Promise<EstadoUploadRelatorio> {
-  await exigirAdmin();
+  await exigirGestorRelatorios();
 
   const titulo = String(formData.get("titulo") ?? "").trim();
   const tipoRaw = String(formData.get("tipo") ?? "").trim() as TipoRelatorio;
@@ -123,7 +123,7 @@ export async function publicarRelatorioAction(
 export async function excluirRelatorioAction(
   idRaw: number | string,
 ): Promise<{ ok: boolean; mensagem: string }> {
-  await exigirAdmin();
+  await exigirGestorRelatorios();
 
   let id: bigint;
   try {

@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./cpa.css";
 import { Share_Tech_Mono } from "next/font/google";
-import "./globals.css";
-import "./cpa.css";
 import { cn } from "@/lib/utils";
 
 const shareTechMono = Share_Tech_Mono({

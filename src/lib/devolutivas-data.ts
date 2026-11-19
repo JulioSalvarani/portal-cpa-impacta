@@ -35,6 +35,20 @@ export const categoriaPorId = (
   CATEGORIAS_RESPOSTA.find((c) => c.id === id) ??
   CATEGORIAS_RESPOSTA[0];
 
+export type RotuloPublico = "aluno" | "prof" | "func";
+
+/**
+ * Rótulo compacto do público-alvo de uma devolutiva, derivado de `perfis_permitidos`:
+ * contém `aluno` → "aluno"; contém `professor` → "prof"; demais (corpo funcional) → "func".
+ */
+export function rotuloPublicoDevolutiva(
+  perfis: readonly PerfilCpa[] = [],
+): RotuloPublico {
+  if (perfis.includes("aluno")) return "aluno";
+  if (perfis.includes("professor")) return "prof";
+  return "func";
+}
+
 export type AnoDevolutivas = {
   ano: number;
   contagem: Record<string, number>;

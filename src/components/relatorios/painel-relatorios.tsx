@@ -14,12 +14,12 @@ import type { RelatorioDocumento, TipoRelatorio } from "@/lib/relatorios-data";
 
 type Props = {
   documentosIniciais?: RelatorioDocumento[];
-  isAdmin?: boolean;
+  podeGerenciar?: boolean;
 };
 
 export function PainelRelatorios({
   documentosIniciais = [],
-  isAdmin = false,
+  podeGerenciar = false,
 }: Props) {
   const [filtro, setFiltro] = useState<"Todos" | TipoRelatorio>("Todos");
   const [nomeArquivo, setNomeArquivo] = useState<string>("Selecionar PDF");
@@ -64,7 +64,7 @@ export function PainelRelatorios({
 
   return (
     <div className="cpa-rel-container">
-      {isAdmin && (
+      {podeGerenciar && (
         <>
           <form
             ref={formRef}
@@ -203,7 +203,7 @@ export function PainelRelatorios({
                     </a>
                   </Button>
 
-                  {isAdmin && (
+                  {podeGerenciar && (
                     <Button
                       type="button"
                       disabled={ocupada}

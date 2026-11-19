@@ -10,6 +10,7 @@ import { RespostaDialog } from "@/components/devolutivas/resposta-dialog";
 import { box, u } from "@/lib/cpa-box";
 import {
   categoriaPorId,
+  rotuloPublicoDevolutiva,
   type Devolutiva,
   type OpcaoStatusFormulario,
 } from "@/lib/devolutivas-data";
@@ -18,6 +19,7 @@ type Props = {
   ano: number;
   devolutivas?: Devolutiva[];
   isAdmin?: boolean;
+  exibirPublico?: boolean;
   areas?: string[];
   categorias?: OpcaoStatusFormulario[];
   trigger: React.ReactElement;
@@ -27,6 +29,7 @@ export function MuralDialog({
   ano,
   devolutivas = [],
   isAdmin = false,
+  exibirPublico = false,
   areas = [],
   categorias = [],
   trigger,
@@ -56,6 +59,15 @@ export function MuralDialog({
                 className="cpa-m-actions"
                 style={{ position: "static", flex: "none" }}
               >
+                {exibirPublico && (
+                  <span
+                    className="cpa-m-pub"
+                    title="Público-alvo da devolutiva"
+                    aria-label={`Público-alvo: ${rotuloPublicoDevolutiva(item.perfisPermitidos)}`}
+                  >
+                    {rotuloPublicoDevolutiva(item.perfisPermitidos)}
+                  </span>
+                )}
                 <RespostaDialog
                   devolutiva={item}
                   isAdmin={isAdmin}

@@ -11,7 +11,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { u } from "@/lib/cpa-box";
-import { ROTULOS_PERFIL_CPA, type CpaItem } from "@/lib/cpas-data";
+import {
+  ANO_MINIMO_CPA,
+  ROTULOS_PERFIL_CPA,
+  anoAtualBrasil,
+  type CpaItem,
+} from "@/lib/cpas-data";
 import { OPCOES_PERFIL } from "@/lib/perfis-data";
 
 type Props = {
@@ -19,6 +24,7 @@ type Props = {
 };
 
 export function PainelCpas({ cpasIniciais }: Props) {
+  const anoAtual = anoAtualBrasil();
   const formRef = useRef<HTMLFormElement>(null);
   const [processandoId, setProcessandoId] = useState<number | null>(null);
   const [confirmarExclusaoId, setConfirmarExclusaoId] = useState<number | null>(null);
@@ -97,9 +103,9 @@ export function PainelCpas({ cpasIniciais }: Props) {
         <Input
           name="ano"
           type="number"
-          min={2000}
-          max={2100}
-          defaultValue={new Date().getFullYear()}
+          min={ANO_MINIMO_CPA}
+          max={anoAtual}
+          defaultValue={anoAtual}
           required
           aria-label="Ano"
           className="cpa-field"
@@ -111,7 +117,7 @@ export function PainelCpas({ cpasIniciais }: Props) {
           aria-label="Status inicial"
           className="cpa-field cpa-select"
         >
-          <option value="true">Ativa (única)</option>
+          <option value="true">Ativa</option>
           <option value="false">Encerrada</option>
         </select>
 
@@ -140,7 +146,7 @@ export function PainelCpas({ cpasIniciais }: Props) {
 
       <div className="cpa-perfis-head">
         <span>Pesquisas CPA cadastradas ({cpasIniciais.length})</span>
-        <span>Regra ativa: apenas 1 CPA aberta simultaneamente</span>
+        <span>Regra ativa: apenas 1 CPA aberta por perfil</span>
       </div>
 
       <div className="cpa-perfis-list">

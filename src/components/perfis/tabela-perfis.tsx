@@ -12,7 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { PerfilCpa } from "@/lib/auth";
 import { u } from "@/lib/cpa-box";
-import { OPCOES_PERFIL, type UsuarioPerfilItem } from "@/lib/perfis-data";
+import {
+  emailValidoParaPerfil,
+  MENSAGEM_EMAIL_IMPACTA,
+  OPCOES_PERFIL,
+  type UsuarioPerfilItem,
+} from "@/lib/perfis-data";
 
 type Props = {
   usuariosIniciais?: UsuarioPerfilItem[];
@@ -46,6 +51,13 @@ export function TabelaPerfis({ usuariosIniciais = [] }: Props) {
     EstadoCriarUsuario,
     FormData
   >(async (prevState, formData) => {
+    // Validação preventiva (a regra definitiva continua no servidor).
+    const emailInformado = String(formData.get("email") ?? "");
+    const cargoInformado = String(formData.get("role") ?? "") as PerfilCpa;
+    if (!emailValidoParaPerfil(emailInformado, cargoInformado)) {
+      return { ok: false, mensagem: MENSAGEM_EMAIL_IMPACTA };
+    }
+
     const res = await criarUsuarioAction(prevState, formData);
     if (res?.ok) {
       formRef.current?.reset();

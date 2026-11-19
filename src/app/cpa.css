@@ -18,11 +18,7 @@
   --cpa-dot: #6df24a;
 
   --cpa-tag-negado: #f20000;
-  --cpa-tag-analise: #ffeb00;
-  --cpa-tag-concluido: #00e000;
   --cpa-bar-negado: #c40000;
-  --cpa-bar-analise: #ffe600;
-  --cpa-bar-concluido: #00c800;
 
   --cpa-mono: var(--font-ui), "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
@@ -162,13 +158,6 @@ body:has(.cpa-root) {
 }
 
 /* ---------- 1. login ---------- */
-.cpa-net {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
 .cpa-card {
   background: var(--cpa-panel);
   border: 1px solid var(--cpa-line);
@@ -347,12 +336,6 @@ body:has(.cpa-root) {
   color: var(--cpa-on-navy);
   font-size: calc(30 * var(--u));
 }
-.cpa-year-title {
-  margin: calc(8 * var(--u)) calc(8 * var(--u)) calc(6 * var(--u));
-  font-size: calc(10 * var(--u));
-  line-height: 1.25;
-  text-align: center;
-}
 .cpa-chart {
   display: flex;
   align-items: flex-end;
@@ -380,15 +363,6 @@ body:has(.cpa-root) {
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-bottom: 0;
   border-radius: calc(5 * var(--u)) calc(5 * var(--u)) 0 0;
-}
-.cpa-bar-negado {
-  background: var(--cpa-bar-negado);
-}
-.cpa-bar-analise {
-  background: var(--cpa-bar-analise);
-}
-.cpa-bar-concluido {
-  background: var(--cpa-bar-concluido);
 }
 .cpa-labs {
   display: flex;
@@ -463,12 +437,6 @@ body:has(.cpa-root) {
   border-radius: calc(10 * var(--u));
   text-align: center;
 }
-.cpa-modal .cpa-m-scroll {
-  position: absolute;
-  border-radius: calc(9 * var(--u));
-  background: #d0d0d0;
-  border: 1px solid #555555;
-}
 .cpa-modal .cpa-m-list {
   position: absolute;
   display: flex;
@@ -502,17 +470,6 @@ body:has(.cpa-root) {
   border-radius: calc(12 * var(--u));
   padding: calc(8 * var(--u)) calc(14 * var(--u));
 }
-.cpa-modal .cpa-m-item--featured {
-  min-height: calc(122 * var(--u));
-  padding-bottom: calc(34 * var(--u));
-}
-.cpa-modal .cpa-m-item--compact {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: calc(12 * var(--u));
-  min-height: calc(58 * var(--u));
-}
 .cpa-modal .cpa-m-text {
   flex: 1;
   min-width: 0;
@@ -540,11 +497,6 @@ body:has(.cpa-root) {
   background: rgba(1, 42, 85, 0.45);
   border-radius: calc(4 * var(--u));
 }
-.cpa-modal .cpa-m-text--full {
-  display: block;
-  width: 100%;
-  min-height: calc(72 * var(--u));
-}
 .cpa-modal .cpa-m-text--short {
   display: block;
   overflow-y: hidden;
@@ -568,18 +520,6 @@ body:has(.cpa-root) {
   box-shadow: none;
   white-space: nowrap;
   font-weight: 400;
-}
-.cpa-modal .cpa-tag--negado,
-.cpa-modal .cpa-tag--negado:hover {
-  background: var(--cpa-tag-negado);
-}
-.cpa-modal .cpa-tag--analise,
-.cpa-modal .cpa-tag--analise:hover {
-  background: var(--cpa-tag-analise);
-}
-.cpa-modal .cpa-tag--concluido,
-.cpa-modal .cpa-tag--concluido:hover {
-  background: var(--cpa-tag-concluido);
 }
 
 /* Modal de Contato da CPA ("i") */
@@ -982,13 +922,6 @@ body:has(.cpa-root) {
   font-size: calc(13 * var(--u));
 }
 
-/* ---------- /pesquisa (página provisória) ---------- */
-.cpa-note {
-  text-align: center;
-  color: #444444;
-  font-size: calc(16 * var(--u));
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cpa-stage *,
   .cpa-modal * {
@@ -1227,12 +1160,6 @@ body:has(.cpa-root) {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-
-.cpa-root.cpa-root--login::before,
-.cpa-root.cpa-root--login::after,
-.cpa-root.cpa-root--login .cpa-bg {
-  display: none;
 }
 
 /* 2. Barras de cadastro rápido em /perfis, /cpas e /relatorios */

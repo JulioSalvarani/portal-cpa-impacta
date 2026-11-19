@@ -5,7 +5,7 @@ import "@/app/cpa.css";
 import { BarraInstitucional } from "@/components/barra-institucional";
 import { CartaoCpa } from "@/components/resultados/cartao-cpa";
 import { Button } from "@/components/ui/button";
-import { exigirUsuarioLogado, type PerfilCpa } from "@/lib/auth";
+import { exigirUsuarioLogado } from "@/lib/auth";
 import { band, box, u } from "@/lib/cpa-box";
 import type { DashboardCpa } from "@/lib/dashboards-data";
 import { prisma } from "@/lib/prisma";
@@ -28,9 +28,6 @@ export default async function PaginaResultados() {
     titulo: item.titulo,
     embed_url: item.embed_url,
     embed_url_externo: item.embed_url_externo,
-    ordem: item.ordem,
-    ativo: item.ativo,
-    perfis: item.perfis_permitidos as PerfilCpa[],
   }));
 
   const usarLinkExterno = usuario.role === "avaliador_externo";

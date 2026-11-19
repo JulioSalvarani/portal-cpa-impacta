@@ -14,7 +14,30 @@ export type UsuarioLogado = {
   email: string;
   nome: string;
   role: PerfilCpa;
+  /** Cor hexadecimal do cargo (`roles.cor_hex`), usada na bolinha do banner de `/inicio`. */
+  corHex: string | null;
 };
+
+/** Perfis que enxergam todas as devolutivas (e a tag de público-alvo). */
+export const PERFIS_VISAO_GLOBAL_DEVOLUTIVAS: readonly PerfilCpa[] = [
+  "admin",
+  "coordenador",
+  "avaliador_externo",
+];
+
+/** Perfis que podem publicar e excluir relatórios/boletins em `/relatorios`. */
+export const PERFIS_GESTORES_RELATORIOS: readonly PerfilCpa[] = [
+  "admin",
+  "coordenador",
+];
+
+export function temVisaoGlobalDevolutivas(role: PerfilCpa): boolean {
+  return PERFIS_VISAO_GLOBAL_DEVOLUTIVAS.includes(role);
+}
+
+export function podeGerenciarRelatorios(role: PerfilCpa): boolean {
+  return PERFIS_GESTORES_RELATORIOS.includes(role);
+}
 
 const PERFIS_VALIDOS: ReadonlySet<string> = new Set([
   "aluno",
@@ -65,12 +88,14 @@ export async function getUsuarioLogado(): Promise<UsuarioLogado | null> {
   const nomeFallback = email.includes("@") ? email.split("@")[0] : "Usuário";
   const nome = (perfil?.nome ?? "").trim() || nomeFallback;
   const role = normalizarPerfil(perfil?.roles?.role);
+  const corHex = perfil?.roles?.cor_hex?.trim() || null;
 
   return {
     userId: user.id,
     email,
     nome,
     role,
+    corHex,
   };
 }
 
@@ -88,7 +113,21 @@ export async function exigirUsuarioLogado(): Promise<UsuarioLogado> {
 }
 
 /**
- * Guard exclusivo para rotas e Server Actions administrativas (`/devolutivas/responder`, `/perfis`).
+ * Guard das Server Actions de relatórios (`publicarRelatorioAction` e `excluirRelatorioAction`):
+ * aceita `admin` e `coordenador`.
+ */
+export async function exigirGestorRelatorios(): Promise<UsuarioLogado> {
+  const usuario = await exigirUsuarioLogado();
+
+  if (!podeGerenciarRelatorios(usuario.role)) {
+    redirect("/inicio");
+  }
+
+  return usuario;
+}
+
+/**
+ * Guard exclusivo para rotas e Server Actions administrativas (`/cpas`, `/devolutivas/responder`, `/perfis`).
  */
 export async function exigirAdmin(): Promise<UsuarioLogado> {
   const usuario = await exigirUsuarioLogado();

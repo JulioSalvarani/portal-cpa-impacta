@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import "@/app/cpa.css";
 import { PainelDevolutivas } from "@/components/devolutivas/painel-devolutivas";
-import { exigirUsuarioLogado, type PerfilCpa } from "@/lib/auth";
+import {
+  exigirUsuarioLogado,
+  temVisaoGlobalDevolutivas,
+  type PerfilCpa,
+} from "@/lib/auth";
 import {
   normalizarSlugStatus,
   type AnoDevolutivas,
@@ -14,13 +18,16 @@ export const metadata: Metadata = { title: "Central de Devolutivas · Portal CPA
 export default async function PaginaDevolutivas() {
   const usuario = await exigirUsuarioLogado();
   const isAdmin = usuario.role === "admin";
+  // admin, coordenador e avaliador_externo veem todas as devolutivas (com tag de público-alvo);
+  // aluno e professor continuam restritos ao seu destino.
+  const visaoGlobal = temVisaoGlobalDevolutivas(usuario.role);
 
   const [statusLista, respostasLista, areasLista] = await Promise.all([
     prisma.status_respostas.findMany({ orderBy: { id: "asc" } }),
     prisma.respostas.findMany({
-      where: {
-        perfis_permitidos: { has: usuario.role },
-      },
+      where: visaoGlobal
+        ? undefined
+        : { perfis_permitidos: { has: usuario.role } },
       orderBy: [{ ano: "desc" }, { id: "desc" }],
     }),
     isAdmin
@@ -95,6 +102,7 @@ export default async function PaginaDevolutivas() {
           resumoAnos={resumoAnos}
           devolutivasPorAno={devolutivasPorAno}
           isAdmin={isAdmin}
+          exibirPublico={visaoGlobal}
           areas={areas}
           categorias={categorias}
         />

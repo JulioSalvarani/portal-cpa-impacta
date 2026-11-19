@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { exigirAdmin, normalizarPerfil, type PerfilCpa } from "@/lib/auth";
+import { emailValidoParaPerfil, MENSAGEM_EMAIL_IMPACTA } from "@/lib/perfis-data";
 import { prisma } from "@/lib/prisma";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -48,6 +49,11 @@ export async function criarUsuarioAction(
       ok: false,
       mensagem: "Selecione um perfil válido.",
     };
+  }
+
+  // Perfis institucionais exigem "impacta" no e-mail; só avaliador_externo (MEC) é isento.
+  if (!emailValidoParaPerfil(email, novoRole)) {
+    return { ok: false, mensagem: MENSAGEM_EMAIL_IMPACTA };
   }
 
   try {
@@ -148,6 +154,22 @@ export async function editarUsuarioAction(
         ok: false,
         mensagem: `Cargo "${novoRole}" não encontrado na tabela roles.`,
       };
+    }
+
+    const perfilAtual = await prisma.profiles.findUnique({
+      where: { user_id: userId },
+      select: { email: true, role: true },
+    });
+
+    if (!perfilAtual) {
+      return { ok: false, mensagem: "Usuário não encontrado." };
+    }
+
+    // Salvaguarda: ao mudar o cargo para um perfil institucional (ex.: promover um
+    // avaliador_externo), o e-mail cadastrado precisa conter "impacta".
+    const mudouCargo = perfilAtual.role !== roleEncontrada.id;
+    if (mudouCargo && !emailValidoParaPerfil(perfilAtual.email ?? "", novoRole)) {
+      return { ok: false, mensagem: MENSAGEM_EMAIL_IMPACTA };
     }
 
     await prisma.profiles.update({

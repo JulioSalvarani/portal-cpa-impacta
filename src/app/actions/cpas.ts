@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { exigirAdmin, normalizarPerfil, type PerfilCpa } from "@/lib/auth";
+import { ANO_MINIMO_CPA, anoAtualBrasil } from "@/lib/cpas-data";
 import { prisma } from "@/lib/prisma";
 
 export type EstadoAcaoCpa = {
@@ -26,7 +27,6 @@ export async function criarCpaAction(
   const title = String(formData.get("title") ?? "").trim();
   const formLink = String(formData.get("form_link") ?? "").trim();
   const ano = Number(formData.get("ano"));
-  const semestre = Number(formData.get("semestre"));
   const perfilRaw = normalizarPerfil(String(formData.get("perfil") ?? ""));
   const isActive = formData.get("is_active") === "true";
 
@@ -46,17 +46,12 @@ export async function criarCpaAction(
     };
   }
 
-  if (!Number.isInteger(ano) || ano < 2000 || ano > 2100) {
-    return {
-      ok: false,
-      mensagem: "Informe um ano válido entre 2000 e 2100.",
-    };
-  }
+  const anoAtual = anoAtualBrasil();
 
-  if (semestre !== 1 && semestre !== 2) {
+  if (!Number.isInteger(ano) || ano < ANO_MINIMO_CPA || ano > anoAtual) {
     return {
       ok: false,
-      mensagem: "O semestre deve ser 1 ou 2.",
+      mensagem: `O ano da CPA deve estar entre ${ANO_MINIMO_CPA} e ${anoAtual}.`,
     };
   }
 
@@ -69,9 +64,13 @@ export async function criarCpaAction(
 
   try {
     await prisma.$transaction(async (tx) => {
+      // Apenas 1 CPA ativa por perfil: encerra somente as ativas do mesmo perfil-alvo.
       if (isActive) {
         await tx.cpas.updateMany({
-          where: { is_active: true },
+          where: {
+            is_active: true,
+            perfis_permitidos: { hasSome: [perfilRaw] },
+          },
           data: { is_active: false },
         });
       }
@@ -81,7 +80,6 @@ export async function criarCpaAction(
           title,
           form_link: formLink,
           ano,
-          semestre,
           is_active: isActive,
           perfis_permitidos: [perfilRaw],
         },
@@ -94,7 +92,7 @@ export async function criarCpaAction(
     return {
       ok: true,
       mensagem: isActive
-        ? "CPA criada e definida como única pesquisa ativa."
+        ? "CPA criada e definida como a pesquisa ativa deste perfil."
         : "CPA cadastrada como encerrada.",
     };
   } catch (error: unknown) {
@@ -125,19 +123,37 @@ export async function alternarStatusCpaAction(
   await exigirAdmin();
 
   try {
-    await prisma.$transaction(async (tx) => {
+    const encontrada = await prisma.$transaction(async (tx) => {
+      const alvo = await tx.cpas.findUnique({
+        where: { id: BigInt(cpaId) },
+        select: { id: true, perfis_permitidos: true },
+      });
+
+      if (!alvo) return false;
+
+      // Apenas 1 CPA ativa por perfil: encerra as demais ativas que compartilham o perfil-alvo.
       if (ativar) {
         await tx.cpas.updateMany({
-          where: { is_active: true },
+          where: {
+            is_active: true,
+            id: { not: alvo.id },
+            perfis_permitidos: { hasSome: alvo.perfis_permitidos },
+          },
           data: { is_active: false },
         });
       }
 
       await tx.cpas.update({
-        where: { id: BigInt(cpaId) },
+        where: { id: alvo.id },
         data: { is_active: ativar },
       });
+
+      return true;
     });
+
+    if (!encontrada) {
+      return { ok: false, mensagem: "CPA não encontrada." };
+    }
 
     revalidatePath("/cpas");
     revalidatePath("/inicio");
@@ -145,7 +161,7 @@ export async function alternarStatusCpaAction(
     return {
       ok: true,
       mensagem: ativar
-        ? "CPA ativada (as demais foram encerradas)."
+        ? "CPA ativada (as demais do mesmo perfil foram encerradas)."
         : "CPA encerrada.",
     };
   } catch (error) {

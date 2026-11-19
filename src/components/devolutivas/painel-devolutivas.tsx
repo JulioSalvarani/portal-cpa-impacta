@@ -15,6 +15,7 @@ type Props = {
   resumoAnos: AnoDevolutivas[];
   devolutivasPorAno: Record<number, Devolutiva[]>;
   isAdmin?: boolean;
+  exibirPublico?: boolean;
   areas?: string[];
   categorias?: OpcaoStatusFormulario[];
 };
@@ -23,6 +24,7 @@ export function PainelDevolutivas({
   resumoAnos,
   devolutivasPorAno,
   isAdmin = false,
+  exibirPublico = false,
   areas = [],
   categorias = [],
 }: Props) {
@@ -86,6 +88,7 @@ export function PainelDevolutivas({
                   ano={item.ano}
                   devolutivas={devolutivasPorAno[item.ano] ?? []}
                   isAdmin={isAdmin}
+                  exibirPublico={exibirPublico}
                   areas={areas}
                   categorias={categorias}
                   trigger={

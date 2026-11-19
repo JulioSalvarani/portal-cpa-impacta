@@ -630,6 +630,7 @@ model respostas {
 model roles {
   id       BigInt     @id @default(autoincrement())
   role     String?    @unique
+  cor_hex  String?
   profiles profiles[]
 
   @@schema("public")

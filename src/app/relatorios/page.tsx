@@ -5,7 +5,7 @@ import "@/app/cpa.css";
 import { BarraInstitucional } from "@/components/barra-institucional";
 import { PainelRelatorios } from "@/components/relatorios/painel-relatorios";
 import { Button } from "@/components/ui/button";
-import { exigirUsuarioLogado } from "@/lib/auth";
+import { exigirUsuarioLogado, podeGerenciarRelatorios } from "@/lib/auth";
 import { band, box, u } from "@/lib/cpa-box";
 import { prisma } from "@/lib/prisma";
 import type { RelatorioDocumento, TipoRelatorio } from "@/lib/relatorios-data";
@@ -47,7 +47,7 @@ export default async function PaginaRelatorios() {
           <div className="cpa-panel" style={band({ left: 14, right: 14, top: 96, bottom: 72 })}>
             <PainelRelatorios
               documentosIniciais={documentos}
-              isAdmin={usuario.role === "admin"}
+              podeGerenciar={podeGerenciarRelatorios(usuario.role)}
             />
           </div>
         </main>
