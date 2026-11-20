@@ -1,7 +1,16 @@
 import type { NextConfig } from "next";
 
+const ipsExtras = process.env.DEV_ALLOWED_ORIGINS
+  ? process.env.DEV_ALLOWED_ORIGINS.split(",").map((ip) => ip.trim()).filter(Boolean)
+  : [];
+
 const nextConfig: NextConfig = {
   /* config options here */
+  allowedDevOrigins: [
+    "192.168.*.*",
+    "10.*.*.*",
+    ...ipsExtras,
+  ],  
   cacheComponents: false,
   partialPrefetching: false,
   reactCompiler: true,

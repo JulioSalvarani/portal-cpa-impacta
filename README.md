@@ -155,6 +155,19 @@ Caso opte por publicar o projeto na **Vercel** conectando-o ao banco de dados no
 2. **Configuração das variáveis de ambiente:** antes de clicar em **Deploy**, cadastre as **5 variáveis de ambiente** no painel do projeto na Vercel (`DATABASE_URL`, `DIRECT_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` e `SUPABASE_SERVICE_ROLE_KEY`), garantindo que `DATABASE_URL` aponte para o *Transaction Pooler* (porta **6543** com `?pgbouncer=true`) e `DIRECT_URL` para o *Session Pooler* (porta **5432**).
 3. **URLs de autenticação no Supabase:** após a publicação e a obtenção da URL final (ou apontamento de domínio próprio), acesse **Supabase → Authentication → URL Configuration** e atualize os campos **Site URL** e **Redirect URLs** com o endereço de produção.
 
+## Testes do banco de dados
+* **Usuários genéricos já criados no banco para realização de testes**
+```
+Aluno (role: 1): aluno.teste@aluno.impacta.edu.br | Senha: Teste@1234
+
+Professor (role: 2): professor.teste@impacta.edu.br | Senha: Teste@1234
+
+Coordenador (role: 3): coordenador.teste@impacta.edu.br | Senha: Teste@1234
+
+Avaliador Externo (role: 4): avaliador.teste@mec.gov.br | Senha: Teste@1234
+
+Admin (role: 5): admin.teste@impacta.edu.br | Senha: Teste@1234
+```
 ## Regras de Banco de Dados e Deploy
 
 * **Sincronização do Prisma:** O banco de dados é gerenciado diretamente no Supabase (SQL Editor / Table Editor) com **RLS habilitado** nas tabelas do schema `public`. Caso altere alguma tabela no Supabase, atualize o schema local executando:
