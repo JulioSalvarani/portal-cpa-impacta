@@ -106,15 +106,19 @@ npm ci
 Crie um arquivo `.env.local` na raiz do projeto com as credenciais do seu projeto Supabase:
 > **POR CONTA DO SUPABASE NÃO PERMITIR A EXPOSIÇÃO DE CHAVES APAGUE O " [APAGAR] " NO MEIO DA CHAVE, ESPAÇOS INCLUSOS**
 ```env
-# Conexão via Transaction Pooler (porta 6543) usada em runtime pelo Prisma
+# Conexão Postgres via shared transaction-mode pooler (apenas IPv4)
 DATABASE_URL="postgresql://postgres.haievsaqclklgrujgskf:Gelado-2505@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
 
-# Conexão direta / Session Pooler (porta 5432) usada pela CLI do Prisma
+# Conexão Postgres via shared session-mode pooler (usado para migrações)
 DIRECT_URL="postgresql://postgres.haievsaqclklgrujgskf:Gelado-2505@aws-0-us-east-1.pooler.supabase.com:5432/postgres"
 
-# Chaves públicas e administrativas do Supabase
+# URL do projeto (Supabase > Project Settings > API > Project URL)
 NEXT_PUBLIC_SUPABASE_URL="https://haievsaqclklgrujgskf.supabase.co"
+
+# Chave pública do cliente (Supabase > Project Settings > API Keys > Publishable key)
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="sb_publishable_HpIf-D-BmTb5yCGEfNuYVg_jw_h8IU1"
+
+# Chave secreta de administração — NUNCA preencher com o valor real neste arquivo
 SUPABASE_SERVICE_ROLE_KEY="sb_secret_lT [APAGAR] iCsj80DQh3wWmf1sGJoQ_joWqv2qm"
 ```
 
@@ -122,6 +126,7 @@ SUPABASE_SERVICE_ROLE_KEY="sb_secret_lT [APAGAR] iCsj80DQh3wWmf1sGJoQ_joWqv2qm"
 
 ### 4. Gerar o Cliente Prisma e Iniciar
 ```bash
+npx prisma db pull
 npx prisma generate
 npm run dev
 ```
