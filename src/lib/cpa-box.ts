@@ -22,7 +22,6 @@ export function box(x: number, y: number, w: number, h: number, extra: CSSProper
   };
 }
 
-/** Só largura e altura (para itens de flex/grid, que não são posicionados em x, y). */
 export function size(w: number, h: number, extra: CSSProperties = {}): CSSProperties {
   return { width: u(w), height: u(h), flex: "none", ...extra };
 }

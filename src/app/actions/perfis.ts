@@ -51,7 +51,7 @@ export async function criarUsuarioAction(
     };
   }
 
-  // Perfis institucionais exigem "impacta" no e-mail; só avaliador_externo (MEC) é isento.
+  
   if (!emailValidoParaPerfil(email, novoRole)) {
     return { ok: false, mensagem: MENSAGEM_EMAIL_IMPACTA };
   }
@@ -165,8 +165,6 @@ export async function editarUsuarioAction(
       return { ok: false, mensagem: "Usuário não encontrado." };
     }
 
-    // Salvaguarda: ao mudar o cargo para um perfil institucional (ex.: promover um
-    // avaliador_externo), o e-mail cadastrado precisa conter "impacta".
     const mudouCargo = perfilAtual.role !== roleEncontrada.id;
     if (mudouCargo && !emailValidoParaPerfil(perfilAtual.email ?? "", novoRole)) {
       return { ok: false, mensagem: MENSAGEM_EMAIL_IMPACTA };

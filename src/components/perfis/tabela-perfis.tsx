@@ -51,7 +51,6 @@ export function TabelaPerfis({ usuariosIniciais = [] }: Props) {
     EstadoCriarUsuario,
     FormData
   >(async (prevState, formData) => {
-    // Validação preventiva (a regra definitiva continua no servidor).
     const emailInformado = String(formData.get("email") ?? "");
     const cargoInformado = String(formData.get("role") ?? "") as PerfilCpa;
     if (!emailValidoParaPerfil(emailInformado, cargoInformado)) {

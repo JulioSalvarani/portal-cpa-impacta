@@ -14,18 +14,15 @@ export type UsuarioLogado = {
   email: string;
   nome: string;
   role: PerfilCpa;
-  /** Cor hexadecimal do cargo (`roles.cor_hex`), usada na bolinha do banner de `/inicio`. */
   corHex: string | null;
 };
 
-/** Perfis que enxergam todas as devolutivas (e a tag de público-alvo). */
 export const PERFIS_VISAO_GLOBAL_DEVOLUTIVAS: readonly PerfilCpa[] = [
   "admin",
   "coordenador",
   "avaliador_externo",
 ];
 
-/** Perfis que podem publicar e excluir relatórios/boletins em `/relatorios`. */
 export const PERFIS_GESTORES_RELATORIOS: readonly PerfilCpa[] = [
   "admin",
   "coordenador",

@@ -1,7 +1,6 @@
 import { CATEGORIAS_RESPOSTA, ORDEM_BARRAS, type CategoriaResposta } from "@/lib/devolutivas-data";
 import { u } from "@/lib/cpa-box";
 
-/** Altura de cada unidade do gráfico, em px do mockup (6 unidades = 102 px). */
 const PX_POR_UNIDADE = 17;
 
 type Props = {

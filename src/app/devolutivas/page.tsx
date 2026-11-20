@@ -18,8 +18,6 @@ export const metadata: Metadata = { title: "Central de Devolutivas · Portal CPA
 export default async function PaginaDevolutivas() {
   const usuario = await exigirUsuarioLogado();
   const isAdmin = usuario.role === "admin";
-  // admin, coordenador e avaliador_externo veem todas as devolutivas (com tag de público-alvo);
-  // aluno e professor continuam restritos ao seu destino.
   const visaoGlobal = temVisaoGlobalDevolutivas(usuario.role);
 
   const [statusLista, respostasLista, areasLista] = await Promise.all([

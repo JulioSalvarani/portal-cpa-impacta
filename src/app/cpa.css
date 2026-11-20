@@ -7,7 +7,6 @@
  */
 
 :root {
-  /* 1 unidade = 1 px do mockup, no maior tamanho que cabe na janela */
   --u: min(calc(100vw / 960), calc(100vh / 540));
 
   --cpa-navy: #012a55;
@@ -23,14 +22,12 @@
   --cpa-mono: var(--font-ui), "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
-/* As telas ocupam a janela inteira no desktop, sem rolagem da página */
 html:has(.cpa-root),
 body:has(.cpa-root) {
   margin: 0;
   overflow: hidden;
 }
 
-/* ---------- janela e tela ---------- */
 .cpa-root {
   position: fixed;
   inset: 0;
@@ -63,7 +60,6 @@ body:has(.cpa-root) {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Zera estilos padrão do navegador dentro das telas */
 .cpa-stage :is(h1, h2, h3, p, ul, li, figure),
 .cpa-modal :is(h1, h2, h3, p, ul, li) {
   margin: 0;
@@ -89,7 +85,6 @@ body:has(.cpa-root) {
   outline-offset: 2px;
 }
 
-/* Centraliza um bloco na tela (a largura e a altura vão inline, em u()) */
 .cpa-center {
   position: absolute;
   left: 50%;
@@ -106,7 +101,6 @@ body:has(.cpa-root) {
   white-space: nowrap;
 }
 
-/* ---------- peças comuns ---------- */
 .cpa-bar {
   display: flex;
   align-items: center;
@@ -124,7 +118,7 @@ body:has(.cpa-root) {
   text-align: center;
 }
 
-/* Botões (shadcn Button): fundo azul-marinho, sem sombra */
+
 .cpa-stage .cpa-btn,
 .cpa-stage .cpa-btn:hover {
   display: flex;
@@ -275,7 +269,7 @@ body:has(.cpa-root) {
   border-radius: calc(12 * var(--u));
 }
 
-/* Fileira de cards com barra de rolagem horizontal */
+
 .cpa-years {
   position: absolute;
   display: flex;
@@ -506,7 +500,6 @@ body:has(.cpa-root) {
   line-height: 1.2;
 }
 
-/* Etiquetas de status (shadcn Badge) */
 .cpa-modal .cpa-tag,
 .cpa-modal .cpa-tag:hover {
   position: absolute;
@@ -1024,7 +1017,6 @@ body:has(.cpa-root) {
     white-space: normal !important;
   }
 
-  /* Grade de botões do painel principal no mobile */
   .cpa-stage > div.cpa-center {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1040,7 +1032,6 @@ body:has(.cpa-root) {
     font-size: 16px !important;
   }
 
-  /* Cartões de formulário (Login e Responder Devolutiva) */
   .cpa-card {
     display: flex;
     flex-direction: column;
@@ -1070,7 +1061,6 @@ body:has(.cpa-root) {
     font-size: 16px !important;
   }
 
-  /* Painéis e listas no mobile */
   .cpa-panel {
     padding: 14px;
   }
@@ -1106,7 +1096,6 @@ body:has(.cpa-root) {
   }
 }
 
-/* Barras de cadastro rápido em /perfis e /cpas (mesmo padrão visual de .cpa-rel-upload) */
 .cpa-perfis-upload,
 .cpa-cpas-upload {
   display: grid;
@@ -1154,7 +1143,6 @@ body:has(.cpa-root) {
    AJUSTES FINAIS: FUNDO DO LOGIN + INPUTS E BOTÕES CRUD
    ========================================================= */
 
-/* 1. Imagem de fundo exclusiva da página /login */
 .cpa-root.cpa-root--login {
   background-image: url("/wallpaper.png");
   background-size: cover;
@@ -1162,7 +1150,6 @@ body:has(.cpa-root) {
   background-repeat: no-repeat;
 }
 
-/* 2. Barras de cadastro rápido em /perfis, /cpas e /relatorios */
 .cpa-perfis-upload,
 .cpa-cpas-upload {
   display: grid;
@@ -1196,7 +1183,6 @@ body:has(.cpa-root) {
   border-radius: calc(var(--u) * 12);
 }
 
-/* 3. Altura uniforme para todos os inputs e selects dentro das barras e listas */
 .cpa-perfis-upload .cpa-field,
 .cpa-cpas-upload .cpa-field,
 .cpa-rel-upload .cpa-field,
@@ -1218,7 +1204,6 @@ body:has(.cpa-root) {
   padding-right: calc(26 * var(--u));
 }
 
-/* 4. Respiro lateral e quebra bloqueada nos botões (Criar CPA, Criar Usuário, Relatórios, Encerrar, Ativar, Salvar) */
 .cpa-stage .cpa-perfis-upload .cpa-btn,
 .cpa-stage .cpa-perfis-upload .cpa-btn:hover,
 .cpa-stage .cpa-perfis-upload .cpa-btn:active,

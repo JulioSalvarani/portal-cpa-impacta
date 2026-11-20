@@ -64,7 +64,6 @@ export async function criarCpaAction(
 
   try {
     await prisma.$transaction(async (tx) => {
-      // Apenas 1 CPA ativa por perfil: encerra somente as ativas do mesmo perfil-alvo.
       if (isActive) {
         await tx.cpas.updateMany({
           where: {
@@ -131,7 +130,6 @@ export async function alternarStatusCpaAction(
 
       if (!alvo) return false;
 
-      // Apenas 1 CPA ativa por perfil: encerra as demais ativas que compartilham o perfil-alvo.
       if (ativar) {
         await tx.cpas.updateMany({
           where: {

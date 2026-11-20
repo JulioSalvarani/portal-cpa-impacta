@@ -9,7 +9,6 @@ export type CpaItem = {
   perfil_permitido: PerfilCpa;
 };
 
-/** Ano mínimo aceito no cadastro de uma CPA. */
 export const ANO_MINIMO_CPA = 2003;
 
 /**

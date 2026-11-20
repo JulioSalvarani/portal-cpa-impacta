@@ -13,7 +13,6 @@ export const metadata: Metadata = { title: "Início · Portal CPA" };
 export default async function PaginaInicial() {
   const usuario = await exigirUsuarioLogado();
 
-  // Avaliador externo não responde pesquisa: o banner mostra apenas boas-vindas, sem consulta à CPA.
   const cpa =
     usuario.role === "avaliador_externo"
       ? null

@@ -31,14 +31,14 @@ export async function proxy(request: NextRequest) {
   const ehRotaPublicaLogin = pathname === "/login";
   const ehRaiz = pathname === "/";
 
-  // Visitante não autenticado tentando acessar rotas internas -> vai para /login
+  // não autenticado tentando acessar rotas internas -> vai para '/login'
   if (!user && !ehRotaPublicaLogin) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
-  // Usuário já autenticado acessando / ou /login -> vai para /inicio
+  // já autenticado acessando qualquer '/' ou '/login' -> vai para '/inicio'
   if (user && (ehRaiz || ehRotaPublicaLogin)) {
     const url = request.nextUrl.clone();
     url.pathname = "/inicio";

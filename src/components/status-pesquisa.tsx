@@ -15,7 +15,6 @@ type Props = {
   isActive?: boolean;
   formLink?: string;
   role?: PerfilCpa;
-  /** Cor hex do cargo (`roles.cor_hex`); quando preenchida, pinta a bolinha do banner. */
   corHex?: string | null;
 };
 
@@ -27,7 +26,6 @@ export function StatusPesquisa({
   corHex = null,
 }: Props) {
   const isAdmin = role === "admin";
-  // Avaliador externo (MEC) não responde ao formulário: vê só boas-vindas e 3 atalhos.
   const ehAvaliadorExterno = role === "avaliador_externo";
   const textoBanner = ehAvaliadorExterno ? "SEJA BEM VINDO" : titulo;
   const estiloDot = {
@@ -37,7 +35,6 @@ export function StatusPesquisa({
     transform: "translateY(-50%)",
     ...(corHex ? { backgroundColor: corHex } : {}),
   };
-  // Eixo X dos 3 atalhos de consulta (148u cada, vão de 32u): centralizados quando não há "Acessar".
   const xAtalhos = ehAvaliadorExterno ? [137, 317, 497] : [254, 434, 614];
 
   return (
